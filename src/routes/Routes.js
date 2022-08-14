@@ -5,6 +5,7 @@ import WomenProducts from '../pages/WomenProducts';
 import KidsProducts from '../pages/KidsProducst';
 import Cart from '../pages/Cart';
 
+
 export default class MainRoutes extends Component {
   render() {
     return (
