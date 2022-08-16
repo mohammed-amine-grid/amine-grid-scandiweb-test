@@ -5,14 +5,7 @@ import arrowdown from "./arrow-down.svg";
 
 const DropdownContainer = styled("div")({
   marginRight: "25px",
-  "& select": {
-    fontWeight: "500",
-    fontSize: "18px",
-    width: "25px",
-    WebkitAppearance: "none",
-    border: "none",
-    outline: "none",
-  },
+ 
 });
 
 const DropdownList = styled("ul")({
