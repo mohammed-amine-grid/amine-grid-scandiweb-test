@@ -64,11 +64,11 @@ const CartActionsButton = styled("button")(
     fontWeight:'600',
     cursor:'pointer'
   },
-  (props) => ({
-    border: `${props.checkout && "none"}`,
-    background: `${props.checkout && "#5ECE7B"}`,
-    color: `${props.checkout && "#fff"}`,
-    padding: `${props.checkout && "16px 28px"}`,
+  ({checkout}) => (checkout && {
+    border:"none",
+    background: "#5ECE7B",
+    color: "#fff",
+    padding: "16px 28px",
   })
 );
 

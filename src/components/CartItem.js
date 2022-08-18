@@ -8,11 +8,18 @@ const CartItemContainer = styled("div")({
   h4: {
     fontWeight: "300",
   },
-});
+},
+({cartpage}) => (cartpage && {
+maxHeight:'336px',
+borderWidth:'1px 0',
+borderStyle:'solid',
+borderColor:'#E5E5E5',
+})
+);
 
 const CartItemAttributesContainer = styled("div")({
   diplay: "flex",
-  flex: "1",
+  // flex: "1",
   "& *": {
     marginBottom: "7px",
   },
@@ -66,10 +73,12 @@ const CartItemImageContainer = styled("div")({
     minWidth: "121px",
     maxHeight: "100%",
     maxWidth: "100%",
-    flex: "1",
-    flexGrow: "1",
+    // flex: "1",
+    // flexGrow: "1",
   },
-});
+}, ({cartpage}) => ({
+  justifyContent:'flex-end'
+}));
 
 const CartItemQuantity = styled("div")({
   display: "flex",
@@ -103,9 +112,10 @@ const CartItemQuantity = styled("div")({
 });
 
 export default class CartItem extends Component {
+  cartpage = this.props.cartpage
   render() {
     return (
-      <CartItemContainer>
+      <CartItemContainer cartpage={this.cartpage}>
         <CartItemAttributesContainer>
           <div>
             <h4>Apollo Running Short</h4>
@@ -123,7 +133,7 @@ export default class CartItem extends Component {
             <CartItemColor color="green" />
             <CartItemColor color="orange" />
             <CartItemColor color="blue" />
-            <CartItemColor color="pink" />
+           
           </div>
         </CartItemAttributesContainer>
         <CartItemImageContainer>
