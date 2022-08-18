@@ -16,7 +16,7 @@ const DropdownList = styled("ul")({
   width:'114px',
   minHeight:'170px',
   marginTop:'10px',
-  right:'7%',
+  right:'-24px',
   boxShadow: '0px 0px 7px 0px rgba(0,0,0,0.1)',
   fontSize: "1.3rem",
   fontWeight: "500",
@@ -40,7 +40,7 @@ const DropdownHeader = styled('div')({
     
     cursor:'pointer',
    
-}, props => ({background: `url(${props.toggled ? arrowdown : arrowup}) no-repeat right`,}))
+}, props => ({background: `url(${props.toggled ? arrowdown : arrowup}) no-repeat right`}))
 
 export default class CurrencyDropdownmenu extends Component {
     state = {

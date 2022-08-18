@@ -4,5 +4,8 @@
     box-sizing: border-box;
 }
 
+html, body {
+    font-family: "Raleway", sans-serif;
+}
 
 /* 400 600 700  300 */
