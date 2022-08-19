@@ -3,7 +3,8 @@ import styled from "@emotion/styled/macro";
 import product from "../product.jpg";
 
 const CartItemContainer = styled("div")(
-  {
+  { 
+    margin:'0',
     display: "flex",
     marginBottom: "40px",
     h5: {

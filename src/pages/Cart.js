@@ -3,8 +3,13 @@ import React, { Component } from "react";
 import CartItem from "../components/CartItem";
 
 const CartPageContainer = styled("div")({
-  paddingInline: "100px",
+  maxWidth:'100vw',
+  paddingInline: "70px",
+  overflowX:'hidden'
+  // display:'flex',
+  // flexDirection:'column',
 });
+
 
 const CartPageOrderContainer = styled("div")({});
 
@@ -47,6 +52,8 @@ export default class Cart extends Component {
     return (
       <CartPageContainer>
         <CartItem cartpageDisplay />
+        <CartItem cartpageDisplay />
+
         <CartPageOrderContainer>
 
         <CartPageOrderDetails>
