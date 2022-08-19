@@ -1,45 +1,94 @@
 import React, { Component } from "react";
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 import product from "../product.jpg";
 
-const CartItemContainer = styled("div")({
-  display: "flex",
-  marginBottom: "40px",
-  h4: {
-    fontWeight: "300",
+const CartItemContainer = styled("div")(
+  {
+    display: "flex",
+    marginBottom: "40px",
+    h5: {
+      fontWeight: "300",
+    },
   },
-},
-({cartpage}) => (cartpage && {
-maxHeight:'336px',
-borderWidth:'1px 0',
-borderStyle:'solid',
-borderColor:'#E5E5E5',
-})
+  ({ cartpageDisplay }) =>
+    cartpageDisplay && {
+      maxHeight: "336px",
+      borderWidth: "1px 0",
+      borderStyle: "solid",
+      borderColor: "#E5E5E5",
+      paddingTop: "24px",
+      paddingBottom: "24px",
+      h5:{
+        fontSize:'18px',
+        fontFamily:'Roboto Condensed',
+        fontWeight:'700'
+      }
+    }
 );
 
-const CartItemAttributesContainer = styled("div")({
-  diplay: "flex",
-  // flex: "1",
-  "& *": {
-    marginBottom: "7px",
+const CartItemAttributesContainer = styled("div")(
+  {
+    display: "flex",
+    flexDirection: "column",
+    flex: "1",
+    justifyContent: "space-between",
+    "& * > *": {
+      marginTop:'4px'
+    },
   },
-});
+  ({ cartpageDisplay }) =>
+  cartpageDisplay && {
+    [CartItemBrand] : {
+        fontSize:'30px',
+        fontWeight:'600'
+      },
+      [CartItemName]: {
+        fontWeight:'400',
+        fontSize:'30px'
+      },
+      [CartItemPrice]: {
+        fontSize: "24px",
+        fontWeight: "700",
+        marginTop:'20px',
+      },
+      [CartItemSize]: {
+        height:'45px',
+        width:'63px',
+        textAlign:'center',
+        lineHeight:'44px',
+        fontSize:'16px',
+        letterSpacing:'0.05em'
+      },
+    [CartItemColor]: {
+      height:'32px',
+      width:'32px',
+    }
+    }
+);
+
+const CartItemBrand = styled('h3')({
+  fontSize:'16px',
+  fontWeight:'300',
+  display:'block'
+})
+const CartItemName = styled('h4')({...CartItemBrand});
 
 const CartItemPrice = styled("span")({
+  marginTop:'10px',
   display: "block",
   fontWeight: "600",
 });
 
 const CartItemSize = styled("span")({
   display: "inline-block",
-  fontWeight: "400",
+  fontWeight: "600",
   fontSize: "14px",
   textAlign: "center",
-  width: "24px",
-  height: "24px",
+  lineHeight:"160%",
+  minWidth: "24px",
+  minHeight: "24px",
   border: "1px solid black",
   marginRight: "8px",
-  padding: "4px",
   cursor: "pointer",
   "&: hover": {
     backgroundColor: "black",
@@ -59,33 +108,50 @@ const CartItemColor = styled("span")(
       outlineOffset: "1px",
     },
   },
-  (props) => ({
-    backgroundColor: `${props.color}`,
+  ({ color }) => ({
+    backgroundColor: `${color}`,
   })
 );
 
-const CartItemImageContainer = styled("div")({
-  display: "flex",
-  flex: "1",
-  img: {
-    display: "block",
-    minHeight: "190px",
-    minWidth: "121px",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    // flex: "1",
-    // flexGrow: "1",
+const CartItemImageContainer = styled("div")(
+  {
+    display: "flex",
+    flex: "1",
+    img: {
+      marginLeft: "8px",
+      display: "block",
+      minHeight: "190px",
+      minWidth: "121px",
+      maxHeight: "100%",
+      maxWidth: "100%",
+    },
   },
-}, ({cartpage}) => ({
-  justifyContent:'flex-end'
-}));
+  ({ cartpageDisplay }) =>
+    cartpageDisplay && {
+      justifyContent: "flex-end",
+      "img": {
+        marginLeft: "24px",
+        minHeight: "288px",
+        maxWidth: "200px",
+      },
+      [CartItemQuantity]: {
+        fontSize: "24px",
+        button :{
+          height:'45px',
+          width:'45px',
+          fontSize:'30px',
+          fontWeight:'300'
+        }
+      },
+    }
+);
 
 const CartItemQuantity = styled("div")({
   display: "flex",
-  marginRight: "8px",
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
+  fontSize: "16px",
   button: {
     outline: "0",
     height: "24px",
@@ -94,7 +160,6 @@ const CartItemQuantity = styled("div")({
     padding: "4px",
     border: "1px solid black",
     background: "#fff",
-    fontSize: "14px",
     cursor: "pointer",
     "&: hover": {
       backgroundColor: "black",
@@ -103,7 +168,7 @@ const CartItemQuantity = styled("div")({
   },
   span: {
     display: "block",
-    fontSize: "16px",
+    fontSize: "inherit",
     fontWeight: "600",
   },
   "& :last-child": {
@@ -111,32 +176,33 @@ const CartItemQuantity = styled("div")({
   },
 });
 
+
 export default class CartItem extends Component {
-  cartpage = this.props.cartpage
+  cartpageDisplay = this.props.cartpageDisplay;
   render() {
     return (
-      <CartItemContainer cartpage={this.cartpage}>
-        <CartItemAttributesContainer>
+      <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
+        <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
           <div>
-            <h4>Apollo Running Short</h4>
+            <CartItemBrand>Apollo</CartItemBrand>
+            <CartItemName>Running Shorts</CartItemName>
             <CartItemPrice>$50.00</CartItemPrice>
           </div>
           <div>
-            <h4>Size</h4>
+            <h5>Size:</h5>
+            <CartItemSize>XS</CartItemSize>
             <CartItemSize>M</CartItemSize>
-            <CartItemSize>L</CartItemSize>
           </div>
 
           <div>
-            <h4>Color</h4>
+            <h5>Color:</h5>
             <CartItemColor color="red" />
             <CartItemColor color="green" />
             <CartItemColor color="orange" />
             <CartItemColor color="blue" />
-           
           </div>
         </CartItemAttributesContainer>
-        <CartItemImageContainer>
+        <CartItemImageContainer cartpageDisplay={this.cartpageDisplay}>
           <CartItemQuantity>
             <button>+</button>
             <span>2</span>
