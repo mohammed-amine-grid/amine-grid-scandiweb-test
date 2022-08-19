@@ -39,7 +39,6 @@ const CartPageOrderButton = styled('button')({
   fontWeight:'500',
   marginTop:'16px',
   textTransform:'uppercase'
- 
 })
 
 
