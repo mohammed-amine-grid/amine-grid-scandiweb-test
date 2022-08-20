@@ -4,11 +4,19 @@ import MenProducts from '../pages/MenProducts';
 import WomenProducts from '../pages/WomenProducts';
 import KidsProducts from '../pages/KidsProducst';
 import Cart from '../pages/Cart';
+import styled from '@emotion/styled';
 
+
+const PagesContainer = styled('div')({
+  marginTop:'80px',
+  // padding:'50px'
+})
 
 export default class MainRoutes extends Component {
   render() {
     return (
+      <PagesContainer>
+
       <Routes>
         <Route path="/" element={<Navigate replace to='women-products' />} />
         <Route path="women-products" element={<WomenProducts />} />
@@ -16,6 +24,7 @@ export default class MainRoutes extends Component {
         <Route path="kids-products" element={<KidsProducts />} />
         <Route path="cart" element={<Cart />} />
       </Routes>
+      </PagesContainer>
     )
   }
 }
