@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled from "@emotion/styled/macro";
 import product from "../product.jpg";
 
+import { ProductBrand, ProductName, ProductColor, ProductSize, ProductPrice } from "./ProductAttributes";
+
 const CartItemContainer = styled("div")(
   { 
     margin:'0',
@@ -39,80 +41,33 @@ const CartItemAttributesContainer = styled("div")(
   },
   ({ cartpageDisplay }) =>
   cartpageDisplay && {
-    [CartItemBrand] : {
+    [ProductBrand] : {
         fontSize:'30px',
         fontWeight:'600'
       },
-      [CartItemName]: {
+      [ProductName]: {
         fontWeight:'400',
         fontSize:'30px'
       },
-      [CartItemPrice]: {
+      [ProductPrice]: {
         fontSize: "24px",
         fontWeight: "700",
         marginTop:'20px',
       },
-      [CartItemSize]: {
+      [ProductSize]: {
         height:'45px',
         width:'63px',
-        textAlign:'center',
         lineHeight:'44px',
         fontSize:'16px',
         letterSpacing:'0.05em'
       },
-    [CartItemColor]: {
+    [ProductColor]: {
       height:'32px',
       width:'32px',
     }
     }
 );
 
-const CartItemBrand = styled('h3')({
-  fontSize:'16px',
-  fontWeight:'300',
-  display:'block'
-})
-const CartItemName = styled('h4')({...CartItemBrand});
-
-const CartItemPrice = styled("span")({
-  marginTop:'10px',
-  display: "block",
-  fontWeight: "600",
-});
-
-const CartItemSize = styled("span")({
-  display: "inline-block",
-  fontWeight: "600",
-  fontSize: "14px",
-  textAlign: "center",
-  lineHeight:"160%",
-  minWidth: "24px",
-  minHeight: "24px",
-  border: "1px solid black",
-  marginRight: "8px",
-  cursor: "pointer",
-  "&: hover": {
-    backgroundColor: "black",
-    color: "#fff",
-  },
-});
-
-const CartItemColor = styled("span")(
-  {
-    display: "inline-block",
-    width: "20px",
-    height: "20px",
-    marginRight: "10px",
-    cursor: "pointer",
-    "&: hover": {
-      outline: "2px solid #5ECE7B",
-      outlineOffset: "1px",
-    },
-  },
-  ({ color }) => ({
-    backgroundColor: `${color}`,
-  })
-);
 
 const CartItemImageContainer = styled("div")(
   {
@@ -185,22 +140,22 @@ export default class CartItem extends Component {
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
         <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
           <div>
-            <CartItemBrand>Apollo</CartItemBrand>
-            <CartItemName>Running Shorts</CartItemName>
-            <CartItemPrice>$50.00</CartItemPrice>
+            <ProductBrand>Apollo</ProductBrand>
+            <ProductName>Running Shorts</ProductName>
+            <ProductPrice>$50.00</ProductPrice>
           </div>
           <div>
             <h5>Size:</h5>
-            <CartItemSize>XS</CartItemSize>
-            <CartItemSize>M</CartItemSize>
+            <ProductSize>XS</ProductSize>
+            <ProductSize>M</ProductSize>
           </div>
 
           <div>
             <h5>Color:</h5>
-            <CartItemColor color="red" />
-            <CartItemColor color="green" />
-            <CartItemColor color="orange" />
-            <CartItemColor color="blue" />
+            <ProductColor color="red" />
+            <ProductColor color="green" />
+            <ProductColor color="orange" />
+            <ProductColor color="blue" />
           </div>
         </CartItemAttributesContainer>
         <CartItemImageContainer cartpageDisplay={this.cartpageDisplay}>

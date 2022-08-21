@@ -46,14 +46,14 @@ const NavCategories = styled("ul")(({ theme }) => ({
   a: {
     textDecoration: "none",
     color: "inherit",
+    fontWeight:'600',
     paddingInline:'8px',
     paddingBottom:'20px',
     ":hover": {
       color: `${theme.colors.accent}`,
       borderBottom: `1px solid ${theme.colors.accent}`,
-      // fontWeight:`${theme.fontWeights.semibold}`,
       // changing fontWeight moves the list itmes and I don't think setting a fixed width is a good idea , so I'm faking the bold effect by using text-shadow.
-      textShadow: "0 0 1.5px",
+      textShadow: "0 0 1px",
     },
   },
   "@media (min-width:991px)": {

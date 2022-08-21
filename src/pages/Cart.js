@@ -4,10 +4,7 @@ import CartItem from "../components/CartItem";
 
 const CartPageContainer = styled("div")({
   maxWidth:'100vw',
-  paddingInline: "70px",
-  overflowX:'hidden'
-  // display:'flex',
-  // flexDirection:'column',
+  padding: "20px 70px",
 });
 
 

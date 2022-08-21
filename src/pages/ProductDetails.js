@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
+import { ProductBrand, ProductName, ProductColor, ProductSize, ProductPrice } from "../components/ProductAttributes";
 
 // 611w 511h / 80 80
 
@@ -16,22 +17,26 @@ const productImgs = [ 'https://images.canadagoose.com/image/upload/w_480,c_scale
 
 const PDPContainer = styled('div')({
 display:'flex',
-flexDirection:'column',
 width:'100vw',
-padding:'20px 97px'
+padding:'60px 97px',
+justifyContent:'center',
+// paddingTop:'60px'
+// alignItmes:'center',
+// background:'red'
 })
 
 
 const ProductCarouselContainer = styled('div')({
-    width:'50%',
+    width:'100%',
     display:'flex',
-    // flexDirection:'column'
+    // background:'blue',
 })
 
 const ProductCarouselSideImgsContainer = styled('div')({
-    flex:'1',
+    // flex:'0.8',
     display:'flex',
     flexDirection:'column',
+    // width:"20%"
 }, )
 
 
@@ -49,10 +54,13 @@ const ProductSideImg = styled('img')({
 }))
 
 const ProductCarouselMainImg = styled('div')({
-    width:'610px',
+    minWidth:'610px',
+    width:'100%',
     height:'510px',
+    
     marginLeft:'30px',
     img : {
+        display:'block',
         maxHeight:'100%',
         height:'100%',
         maxWidth:'100%',
@@ -60,6 +68,73 @@ const ProductCarouselMainImg = styled('div')({
     }
 })
 
+const ProductAttributesContainer = styled('div')({
+    // width:'40%',
+    // height:'200px',
+    // backgroundColor:'red',
+    // display:'flex',
+    // background:'green',
+    flexDirection:'column',
+    // justifyContent:'center',
+    paddingLeft:'100px',
+    h5: {
+        fontWeight:'700',
+        fontSize:'18px',
+        textTransform:'uppercase',
+        fontFamily:'Roboto Condensed',
+        marginBottom:'8px'
+    },
+    [ProductBrand]: {
+        fontSize:'30px',
+        fontWeight:'600'
+    },
+    [ProductName]: {
+        fontSize:'30px',
+        fontWeight:'400',
+        marginBottom:'40px'
+    },
+    [ProductSize]: {
+        width:'63px',
+        height:'45px',
+        fontSize:'16px',
+        lineHeight:'2.7',
+        marginBottom:'24px'
+    },
+    [ProductColor]:{
+        width:'32px',
+        height:'32px',
+        marginBottom:'32px'
+    },
+    [ProductPrice]:{
+        fontSize:'24px',
+        fontWeight:'700'
+    }
+
+})
+
+const AddToCartButton = styled('button')({
+    // outline:'none',
+    marginTop:'20px',
+    color:'#fff',
+    border:'none',
+    width: "287px",
+    height: "52px",
+    fontWeight:'600',
+    fontSize:'16px',
+    // padding: "16px 32px",
+    background: "#5ECE7B",
+    textTransform: "uppercase",
+})
+
+const ProductDescription = styled('p')({
+    fontFamily:'Roboto',
+    fontSize:'16px',
+    width:'41%',
+    // wordBreak:'break',
+    // wordBreak:'break-all',
+    lineHeight:'160%',
+    marginTop:'40px'
+})
 
 
 export default class ProductDetails extends Component {
@@ -90,6 +165,33 @@ this.setState((prevState, _) => {
                 <img alt='main-product-img' src={this.state.selectedMainImg} />
             </ProductCarouselMainImg>
         </ProductCarouselContainer>
+        <ProductAttributesContainer>
+            <div>
+                <ProductBrand>Apollo</ProductBrand>
+                <ProductName>Running Shorts</ProductName>
+            </div>
+            <div>
+                <h5>size</h5>
+                <ProductSize>XS</ProductSize>
+                <ProductSize>M</ProductSize>
+                <ProductSize>S</ProductSize>
+                <ProductSize>L</ProductSize>
+            </div>
+            <div>
+                <h5>color:</h5>
+                <ProductColor color='black' />
+                <ProductColor color='gray' />
+                <ProductColor color='#0F6450' />
+            </div>
+
+            <div>
+                <h5>Price</h5>
+                <ProductPrice>$50.00</ProductPrice>
+            </div>
+
+            <AddToCartButton>Add to cart</AddToCartButton>
+            <ProductDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex placeat molestiae modi! Excepturi, quod unde. Eius id temporibus sapiente a illo voluptatibus. Alias repellat quos adipisci aliquam suscipit quidem fuga.</ProductDescription>
+        </ProductAttributesContainer>
       </PDPContainer>
     )
   }
