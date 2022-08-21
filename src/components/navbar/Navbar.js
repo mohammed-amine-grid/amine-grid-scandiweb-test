@@ -9,7 +9,6 @@ const NavbarContainer = styled("nav")(({ theme }) => ({
   width: "100vw",
   position: "fixed",
   top: "0",
-  // zIndex:'999',
   backgroundColor: "white",
   fontFamily: `${theme.fonts.primary}`,
   paddingInline: "17px",
@@ -25,7 +24,6 @@ const NavbarContainer = styled("nav")(({ theme }) => ({
   ".nav-logo": {
     height: "32px",
     width: "28px",
-    // flex:'3'
   },
   "@media (min-width:991px)": {
     paddingInline: "20px",
@@ -50,7 +48,6 @@ const NavCategories = styled("ul")(({ theme }) => ({
     color: "inherit",
     paddingInline:'8px',
     paddingBottom:'20px',
-    // fontSize:'14px',
     ":hover": {
       color: `${theme.colors.accent}`,
       borderBottom: `1px solid ${theme.colors.accent}`,
@@ -69,12 +66,10 @@ const NavCategories = styled("ul")(({ theme }) => ({
   },
 
   "@media (min-width:1399px)": {
-    // background:'red',
     a: {
       paddingInline: "30px",
       paddingBottom: "32px",
-      // color:'green',
-      // display:'none'
+    
     },
   },
 }));
@@ -88,7 +83,6 @@ const NavActions = styled("ul")({
   "cart-logo": {
     width: "20px",
     height: "13px",
-    // marginRight:'18px'
   },
   flex: "2",
 });

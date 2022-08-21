@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-
+import ProductDetails from './ProductDetails'
 export default class KidsProducst extends Component {
   render() {
     return (
-      <div>KidsProducst</div>
+      <div>
+        <ProductDetails></ProductDetails>
+      </div>
     )
   }
 }
