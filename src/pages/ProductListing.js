@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import ProductListingCard from "../components/ProductListingCard";
 
 const PLPContainer = styled("div")({
-  padding:'80px 102px',
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gap:'40px'

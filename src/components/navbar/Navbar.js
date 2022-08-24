@@ -8,6 +8,7 @@ import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
 const NavbarContainer = styled("nav")(({ theme }) => ({
   width: "100vw",
   position: "fixed",
+  zIndex:'999',
   top: "0",
   backgroundColor: "white",
   fontFamily: `${theme.fonts.primary}`,
