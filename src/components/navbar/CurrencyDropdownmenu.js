@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
-import arrowup from "./arrow-up.svg";
-import arrowdown from "./arrow-down.svg";
+import arrowup from "../../imgs/arrow-up.svg";
+import arrowdown from "../../imgs/arrow-down.svg";
+import getCurrencies from "../../graphql/getCurrencies";
+import { connect } from "react-redux";
+
+// import 
 
 const DropdownContainer = styled("div")({
   marginRight: "25px",
@@ -44,7 +48,12 @@ const DropdownHeader = styled('div')({
 
 export default class CurrencyDropdownmenu extends Component {
     state = {
-        open:false
+        open:false,
+        currencies:[]
+    }
+
+    componentDidMount(){
+      getCurrencies().then(res => this.setState({currencies:res}))
     }
 
     toggleDropdown() {
@@ -52,13 +61,18 @@ export default class CurrencyDropdownmenu extends Component {
     }
 
   render() {
+    console.log(this.state.currencies);
     return (
       <DropdownContainer>
-        <DropdownHeader toggled={this.state.open}  onClick={this.toggleDropdown.bind(this)}>$</DropdownHeader>
-        {this.state.open && <DropdownList>
-          <li>$ USD</li>
+        <DropdownHeader toggled={this.state.open}  onClick={this.toggleDropdown.bind(this)}>5</DropdownHeader>
+        {this.state.open && 
+        
+          
+        <DropdownList>
+          {this.state.currencies.map(currency => <li>{currency.symbol + ' ' + currency.label}</li> )}
+          {/* <li>$ USD</li>
           <li>£ BSD</li>
-          <li>$ HSD</li>
+          <li>$ HSD</li> */}
         </DropdownList>}
       </DropdownContainer>
     );

@@ -145,6 +145,7 @@ export default class ProductDetails extends Component {
           <ProductCarouselSideImgsContainer>
             {productImgs.map((img, i) => (
               <ProductSideImg
+              key={i}
                 selected={this.state.selectedMainImg === img}
                 onClick={() => this.selectImg(img)}
                 alt="product-img"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled/macro';
 //   "",
-import cartIcon from './circle-cart-icon.svg'
+import cartIcon from '../imgs/circle-cart-icon.svg'
 
 
 const CardImg = styled('img') ({

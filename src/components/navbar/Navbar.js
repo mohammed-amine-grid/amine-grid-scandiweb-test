@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import navlogo from "./a-logo.svg";
-import cartlogo from "./cart.svg";
+import navlogo from "../../imgs/a-logo.svg";
+import cartlogo from "../../imgs/cart.svg";
 import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
+import getProductCategories from "../../graphql/queries/getProductCategories";
 
 const NavbarContainer = styled("nav")(({ theme }) => ({
   width: "100vw",
   position: "fixed",
-  zIndex:'999',
+  zIndex: "999",
   top: "0",
   backgroundColor: "white",
   fontFamily: `${theme.fonts.primary}`,
@@ -37,26 +38,12 @@ const NavbarContainer = styled("nav")(({ theme }) => ({
   },
 }));
 
-const NavCategories = styled("ul")(({ theme }) => ({
+const CategoriesContainer = styled("ul") ({
   display: "flex",
   flex: "2.6",
   justifyContent: "start",
-  li: {
-    listStyle: "none",
-  },
-  a: {
-    textDecoration: "none",
-    color: "inherit",
-    fontWeight:'600',
-    paddingInline:'8px',
-    paddingBottom:'20px',
-    ":hover": {
-      color: `${theme.colors.accent}`,
-      borderBottom: `1px solid ${theme.colors.accent}`,
-      // changing fontWeight moves the list itmes and I don't think setting a fixed width is a good idea , so I'm faking the bold effect by using text-shadow.
-      textShadow: "0 0 1px",
-    },
-  },
+  
+ 
   "@media (min-width:991px)": {
     flex: "2.2",
     a: { paddingInline: "14px", paddingBottom: "24px" },
@@ -70,10 +57,41 @@ const NavCategories = styled("ul")(({ theme }) => ({
     a: {
       paddingInline: "30px",
       paddingBottom: "32px",
-    
     },
   },
-}));
+});
+
+const CategoryLink = styled('li')({
+  listStyle: "none",
+   a: {
+    textDecoration: "none",
+    color: "inherit",
+    fontWeight: "600",
+    paddingInline: "8px",
+    paddingBottom: "20px",
+    ":hover": {
+      color: '#5ECE7B',
+      borderBottom: '1px solid #5ECE7B',
+      // changing fontWeight wiggles the list itmes and I don't think setting a fixed width is a good idea , so I'm faking the bold effect by using a text-shadow.
+      textShadow: "0 0 1px",
+    },
+  },
+   "@media (min-width:991px)": {
+    a: { paddingInline: "14px", paddingBottom: "24px" },
+  },
+
+  "@media (min-width:1199px)": {
+    a: { paddingInline: "24px", paddingBottom: "28px" },
+  },
+
+  "@media (min-width:1399px)": {
+    a: {
+      paddingInline: "30px",
+      paddingBottom: "32px",
+    },
+  },
+})
+
 
 const NavActions = styled("ul")({
   display: "flex",
@@ -102,22 +120,32 @@ const CartIconItmesNumber = styled("div")({
   fontWeight: "600",
 });
 
+
+
+
+
 export default class Navbar extends Component {
+  state = {
+    categories: [],
+  };
+
+  componentDidMount() {
+    getProductCategories().then((res) =>
+      this.setState({
+        categories: res,
+      })
+    );
+  }
   render() {
     return (
       <NavbarContainer>
-        <NavCategories>
-          <li>
-            <Link to="/women-products">Women</Link>
-          </li>
-
-          <li>
-            <Link to="/men-products">Men</Link>
-          </li>
-          <li>
-            <Link to="/kids-products">Kids</Link>
-          </li>
-        </NavCategories>
+        <CategoriesContainer>
+          {this.state.categories && this.state.categories.map((category) => (
+            <CategoryLink key={category.name}>
+              <Link to={`/${category.name}`}>{category.name}</Link>
+            </CategoryLink>
+          ))}
+        </CategoriesContainer>
         <img className="nav-log" src={navlogo} alt="nav-logo" />
         <NavActions className="actions">
           <CurrencyDropdownmenu />
