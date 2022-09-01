@@ -46,30 +46,29 @@ const DropdownHeader = styled('div')({
    
 }, props => ({background: `url(${props.toggled ? arrowdown : arrowup}) no-repeat right`}))
 
-export default class CurrencyDropdownmenu extends Component {
+ class CurrencyDropdownmenu extends Component {
     state = {
         open:false,
-        currencies:[]
     }
-
-    componentDidMount(){
-      getCurrencies().then(res => this.setState({currencies:res}))
-    }
+    
+    // componentDidMount(){
+    // this.props.getCurrencies()
+    // }
 
     toggleDropdown() {
         this.setState({open : !this.state.open})
     }
 
   render() {
-    console.log(this.state.currencies);
+    // console.log(this.props.currencies);
     return (
       <DropdownContainer>
-        <DropdownHeader toggled={this.state.open}  onClick={this.toggleDropdown.bind(this)}>5</DropdownHeader>
+        <DropdownHeader toggled={this.props.open}  onClick={this.toggleDropdown.bind(this)}>$</DropdownHeader>
         {this.state.open && 
         
           
         <DropdownList>
-          {this.state.currencies.map(currency => <li>{currency.symbol + ' ' + currency.label}</li> )}
+          {this.props.currencies.map(currency => <li>{currency.symbol + ' ' + currency.label}</li> )}
           {/* <li>$ USD</li>
           <li>£ BSD</li>
           <li>$ HSD</li> */}
@@ -78,3 +77,13 @@ export default class CurrencyDropdownmenu extends Component {
     );
   }
 }
+
+const mapState = (state) => ({
+currencies: state.allCurrencies
+})
+
+const mapDispatch = (dispatch) => ({
+  getCurrencies: () => dispatch.currencies.getCurrencies,
+})
+
+export default connect(mapState, mapDispatch)(CurrencyDropdownmenu)

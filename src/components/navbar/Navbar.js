@@ -71,7 +71,7 @@ const CategoryLink = styled('li')({
     paddingBottom: "20px",
     ":hover": {
       color: '#5ECE7B',
-      borderBottom: '1px solid #5ECE7B',
+      borderBottom: '2px solid #5ECE7B',
       // changing fontWeight wiggles the list itmes and I don't think setting a fixed width is a good idea , so I'm faking the bold effect by using a text-shadow.
       textShadow: "0 0 1px",
     },

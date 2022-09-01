@@ -1,7 +1,7 @@
-import { configureStore } from "@reduxjs/toolkit";
-import currencyReducer from '../features/currency/currencySlice'
-export const store = configureStore({
-    reducer:{
-       currency : currencyReducer
-    }
+import {init} from '@rematch/core';
+import {currencyModel} from './models/currency';
+
+export const store = init({
+         currencyModel
 })
+

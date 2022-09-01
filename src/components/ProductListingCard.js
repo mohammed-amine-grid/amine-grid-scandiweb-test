@@ -78,15 +78,16 @@ const CardText = styled('div')({
 
   export default class ProductListingCard extends Component {
     render() {
-      const {inStock} = this.props
+      const {brand, name, prices, inStock, gallery} = this.props
+      // const {inStock} = this.props
       return (
       <Card inStock={inStock}>
-        <CardImg src='https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016105/product-image/2409L_61.jpg' />
+        <CardImg src={gallery[0]} />
          {inStock && <AddToCartIcon alt='add-to-cart-button' src={cartIcon} />}
           {!inStock && <OutOfStock>Out of stock</OutOfStock>}
         <CardText>
-            <p>Apollo Running Shorts</p>
-            <p>$50.00</p>
+            <p>{brand + ' ' + name}</p>
+            <p>${prices[0].amount}</p>
         </CardText>
       </Card>
     )
