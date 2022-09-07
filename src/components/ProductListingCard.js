@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled/macro';
-//   "",
 import cartIcon from '../imgs/circle-cart-icon.svg'
+import { Link } from 'react-router-dom';
 
 
 const CardImg = styled('img') ({
@@ -9,6 +9,7 @@ const CardImg = styled('img') ({
   width:'354px',
   height:'330px',
   marginBottom:'24px',
+  boxShadow: '0px 1px 10px rgba(168, 172, 176, 0.19)',
 })
 
 const CardText = styled('div')({
@@ -77,13 +78,16 @@ const CardText = styled('div')({
   })
 
   export default class ProductListingCard extends Component {
+   
     render() {
-      const {brand, name, prices, inStock, gallery} = this.props
+      const {brand, name, prices, inStock, gallery, id} = this.props
       // const {inStock} = this.props
       return (
       <Card inStock={inStock}>
         <CardImg src={gallery[0]} />
-         {inStock && <AddToCartIcon alt='add-to-cart-button' src={cartIcon} />}
+         {inStock && <Link to={`/product/${id}`}>
+         <AddToCartIcon alt='add-to-cart-button' src={cartIcon} />
+         </Link> }
           {!inStock && <OutOfStock>Out of stock</OutOfStock>}
         <CardText>
             <p>{brand + ' ' + name}</p>

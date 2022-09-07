@@ -49,4 +49,10 @@ const ProductColor = styled("span")(
   })
 );
 
+
+const ProductAttr = styled("div")({
+ 
+})
+
+
 export {ProductBrand, ProductColor,ProductName, ProductSize,ProductPrice}

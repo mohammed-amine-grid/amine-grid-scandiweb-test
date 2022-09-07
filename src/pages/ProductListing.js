@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
 import ProductListingCard from "../components/ProductListingCard";
-// import {withRouter} from 'react-router-dom'
 import {withRouter} from '../routes/withRouter'
 import getCategoryProducts from "../graphql/queries/getCategoryProducts";
 const PLPContainer = styled("div")({
+  padding:"70px",
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gap:'40px'

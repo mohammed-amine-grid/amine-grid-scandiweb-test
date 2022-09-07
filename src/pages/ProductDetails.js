@@ -7,18 +7,12 @@ import {
   ProductSize,
   ProductPrice,
 } from "../components/ProductAttributes";
-
+import getProduct from "../graphql/queries/getProductDetails"; 
+import { withRouter } from "../routes/withRouter";
 // 611w 511h / 80 80
+import { getSizes } from "../utils/getAttributes";
 
-const productImgs = [
-  "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016105/product-image/2409L_61.jpg",
-  "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016107/product-image/2409L_61_a.jpg",
-  "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016108/product-image/2409L_61_b.jpg",
-  "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016109/product-image/2409L_61_c.jpg",
-  "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016110/product-image/2409L_61_d.jpg",
-  "https://images.canadagoose.com/image/upload/w_1333,c_scale,f_auto,q_auto:best/v1634058169/product-image/2409L_61_o.png",
-  "https://images.canadagoose.com/image/upload/w_1333,c_scale,f_auto,q_auto:best/v1634058159/product-image/2409L_61_p.png",
-];
+
 
 const PDPContainer = styled("div")({
   display: "flex",
@@ -65,6 +59,8 @@ const ProductCarouselMainImg = styled("div")({
     maxHeight: "510px",
   },
 });
+
+
 
 const ProductAttributesContainer = styled("div")({
   flexDirection: "column",
@@ -124,11 +120,15 @@ const ProductDescription = styled("p")({
   marginTop: "40px",
 });
 
-export default class ProductDetails extends Component {
+class ProductDetails extends Component {
   state = {
-    selectedMainImg: productImgs[0],
+    selectedMainImg: '',
+    product: null,
   };
-
+ componentDidMount() {
+console.log(this.props.params);
+      getProduct(this.props.params['*']).then(res => this.setState({product:res.product, selectedMainImg:res.product.gallery[0]}));
+    }
   selectImg(img) {
     this.setState((prevState, _) => {
       if (prevState.selectedMainImg === img) return;
@@ -139,11 +139,15 @@ export default class ProductDetails extends Component {
   }
 
   render() {
+    console.log(this.state?.product);
+    // getSizes(this.state?.product)
+    // let {name, id, gallery, attributes,} = this.state?.product
+    
     return (
-      <PDPContainer>
+      this.state.product && <PDPContainer>
         <ProductCarouselContainer>
           <ProductCarouselSideImgsContainer>
-            {productImgs.map((img, i) => (
+            {this.state.product.gallery.map((img, i) => (
               <ProductSideImg
               key={i}
                 selected={this.state.selectedMainImg === img}
@@ -159,16 +163,14 @@ export default class ProductDetails extends Component {
         </ProductCarouselContainer>
         <ProductAttributesContainer>
           <div>
-            <ProductBrand>Apollo</ProductBrand>
-            <ProductName>Running Shorts</ProductName>
+            <ProductBrand>{this.state.product.brand}</ProductBrand>
+            <ProductName>{this.state.product.name}</ProductName>
           </div>
-          <div>
+          {getSizes(this.state.product) && <div>
             <h5>size</h5>
-            <ProductSize>XS</ProductSize>
-            <ProductSize>M</ProductSize>
-            <ProductSize>S</ProductSize>
-            <ProductSize>L</ProductSize>
-          </div>
+            {getSizes(this.state.product).map(size => <ProductSize key={size.id}>{size.value}</ProductSize>)}
+            
+          </div>}
           <div>
             <h5>color:</h5>
             <ProductColor color="black" />
@@ -193,3 +195,4 @@ export default class ProductDetails extends Component {
     );
   }
 }
+export default withRouter(ProductDetails)

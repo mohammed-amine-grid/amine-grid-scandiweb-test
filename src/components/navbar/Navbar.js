@@ -142,7 +142,7 @@ export default class Navbar extends Component {
         <CategoriesContainer>
           {this.state.categories && this.state.categories.map((category) => (
             <CategoryLink key={category.name}>
-              <Link to={`/${category.name}`}>{category.name}</Link>
+              <Link to={`/category/${category.name}`}>{category.name}</Link>
             </CategoryLink>
           ))}
         </CategoriesContainer>
