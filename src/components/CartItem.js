@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "@emotion/styled/macro";
 import product from "../product.jpg";
 
-import { ProductBrand, ProductName, ProductColor, ProductSize, ProductPrice } from "./ProductAttributes";
+import { ProductBrand, ProductName, ProductColor, Attribute, ProductPrice } from "./ProductAttributes";
 
 const CartItemContainer = styled("div")(
   { 
@@ -54,7 +54,7 @@ const CartItemAttributesContainer = styled("div")(
         fontWeight: "700",
         marginTop:'20px',
       },
-      [ProductSize]: {
+      [Attribute]: {
         height:'45px',
         width:'63px',
         lineHeight:'44px',
@@ -146,8 +146,8 @@ export default class CartItem extends Component {
           </div>
           <div>
             <h5>Size:</h5>
-            <ProductSize>XS</ProductSize>
-            <ProductSize>M</ProductSize>
+            <Attribute>XS</Attribute>
+            <Attribute>M</Attribute>
           </div>
 
           <div>

@@ -7,7 +7,10 @@ export const getSizes = (product) => {
 }
 
 
+
+
 const getAttributes = (product) => {
 let attributes = product.attributes;
 
 }
+

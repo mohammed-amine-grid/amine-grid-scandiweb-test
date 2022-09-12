@@ -4,20 +4,20 @@ import {
   ProductBrand,
   ProductName,
   ProductColor,
-  ProductSize,
+  Attribute,
   ProductPrice,
+  AttrTitle
 } from "../components/ProductAttributes";
 import getProduct from "../graphql/queries/getProductDetails"; 
 import { withRouter } from "../routes/withRouter";
 // 611w 511h / 80 80
-import { getSizes } from "../utils/getAttributes";
 
 
 
 const PDPContainer = styled("div")({
   display: "flex",
   width: "100vw",
-  padding: "82px 97px",
+  padding: "42px 97px",
   justifyContent: "center",
   "@media(max-height:930px)": {
     padding: "20px 97px",
@@ -66,13 +66,7 @@ const ProductAttributesContainer = styled("div")({
   flexDirection: "column",
   paddingLeft: "100px",
   width:'100%',
-  h5: {
-    fontWeight: "700",
-    fontSize: "18px",
-    textTransform: "uppercase",
-    fontFamily: "Roboto Condensed",
-    marginBottom: "8px",
-  },
+
   [ProductBrand]: {
     fontSize: "30px",
     fontWeight: "600",
@@ -82,7 +76,7 @@ const ProductAttributesContainer = styled("div")({
     fontWeight: "400",
     marginBottom: "40px",
   },
-  [ProductSize]: {
+  [Attribute]: {
     width: "63px",
     height: "45px",
     fontSize: "16px",
@@ -113,8 +107,8 @@ const AddToCartButton = styled("button")({
 });
 
 const ProductDescription = styled("p")({
-  fontFamily: "Roboto",
-  fontSize: "16px",
+  fontFamily: "Raleway",
+  fontSize: "18px",
   width: "293px",
   lineHeight: "160%",
   marginTop: "40px",
@@ -139,15 +133,16 @@ console.log(this.props.params);
   }
 
   render() {
+    const product = this.state.product
     console.log(this.state?.product);
     // getSizes(this.state?.product)
     // let {name, id, gallery, attributes,} = this.state?.product
     
     return (
-      this.state.product && <PDPContainer>
+      product && <PDPContainer>
         <ProductCarouselContainer>
           <ProductCarouselSideImgsContainer>
-            {this.state.product.gallery.map((img, i) => (
+            {product.gallery.map((img, i) => (
               <ProductSideImg
               key={i}
                 selected={this.state.selectedMainImg === img}
@@ -163,32 +158,25 @@ console.log(this.props.params);
         </ProductCarouselContainer>
         <ProductAttributesContainer>
           <div>
-            <ProductBrand>{this.state.product.brand}</ProductBrand>
-            <ProductName>{this.state.product.name}</ProductName>
+            <ProductBrand>{product.brand}</ProductBrand>
+            <ProductName>{product.name}</ProductName>
           </div>
-          {getSizes(this.state.product) && <div>
-            <h5>size</h5>
-            {getSizes(this.state.product).map(size => <ProductSize key={size.id}>{size.value}</ProductSize>)}
-            
-          </div>}
-          <div>
-            <h5>color:</h5>
-            <ProductColor color="black" />
-            <ProductColor color="gray" />
-            <ProductColor color="#0F6450" />
-          </div>
+          
+              {product.attributes.map(attr => <div key={attr.id}>
+                <AttrTitle>{attr.id}</AttrTitle>
+                {attr.items.map(item => item.value[0] === "#" ? <ProductColor color={item.value} /> : <Attribute>{item.value}</Attribute>)}
+              </div>)}
+        
 
           <div>
-            <h5>Price</h5>
+            <AttrTitle>Price</AttrTitle>
             <ProductPrice>$50.00</ProductPrice>
+
           </div>
 
           <AddToCartButton>Add to cart</AddToCartButton>
           <ProductDescription>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex placeat
-            molestiae modi! Excepturi, quod unde. Eius id temporibus sapiente a
-            illo voluptatibus. Alias repellat quos adipisci aliquam suscipit
-            quidem fuga.
+            {product.description.replace(/(<([^>]+)>)/ig, "")}
           </ProductDescription>
         </ProductAttributesContainer>
       </PDPContainer>
