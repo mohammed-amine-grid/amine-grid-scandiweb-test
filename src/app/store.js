@@ -1,7 +1,6 @@
-import {init} from '@rematch/core';
-import {currencyModel} from './models/currency';
+import { init } from "@rematch/core";
+import {currencyModel} from "./models/currency";
 
 export const store = init({
-         currencyModel
-})
-
+  currency: currencyModel,
+});

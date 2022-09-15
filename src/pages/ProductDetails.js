@@ -6,13 +6,11 @@ import {
   ProductColor,
   Attribute,
   ProductPrice,
-  AttrTitle
+  AttrTitle,
 } from "../components/ProductAttributes";
-import getProduct from "../graphql/queries/getProductDetails"; 
+import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
 // 611w 511h / 80 80
-
-
 
 const PDPContainer = styled("div")({
   display: "flex",
@@ -27,7 +25,7 @@ const PDPContainer = styled("div")({
 const ProductCarouselContainer = styled("div")({
   width: "100%",
   display: "flex",
-  justifyContent:'center'
+  justifyContent: "center",
 });
 
 const ProductCarouselSideImgsContainer = styled("div")({
@@ -53,19 +51,17 @@ const ProductSideImg = styled("img")(
 
 const ProductCarouselMainImg = styled("div")({
   width: "611px",
-    // flex:'',
+  // flex:'',
   img: {
     width: "100%",
     maxHeight: "510px",
   },
 });
 
-
-
 const ProductAttributesContainer = styled("div")({
   flexDirection: "column",
   paddingLeft: "100px",
-  width:'100%',
+  width: "100%",
 
   [ProductBrand]: {
     fontSize: "30px",
@@ -116,13 +112,18 @@ const ProductDescription = styled("p")({
 
 class ProductDetails extends Component {
   state = {
-    selectedMainImg: '',
+    selectedMainImg: "",
     product: null,
   };
- componentDidMount() {
-console.log(this.props.params);
-      getProduct(this.props.params['*']).then(res => this.setState({product:res.product, selectedMainImg:res.product.gallery[0]}));
-    }
+  componentDidMount() {
+    console.log(this.props.params);
+    getProduct(this.props.params["*"]).then((res) =>
+      this.setState({
+        product: res.product,
+        selectedMainImg: res.product.gallery[0],
+      })
+    );
+  }
   selectImg(img) {
     this.setState((prevState, _) => {
       if (prevState.selectedMainImg === img) return;
@@ -133,54 +134,62 @@ console.log(this.props.params);
   }
 
   render() {
-    const product = this.state.product
+    const product = this.state.product;
     console.log(this.state?.product);
     // getSizes(this.state?.product)
     // let {name, id, gallery, attributes,} = this.state?.product
-    
+
     return (
-      product && <PDPContainer>
-        <ProductCarouselContainer>
-          <ProductCarouselSideImgsContainer>
-            {product.gallery.map((img, i) => (
-              <ProductSideImg
-              key={i}
-                selected={this.state.selectedMainImg === img}
-                onClick={() => this.selectImg(img)}
-                alt="product-img"
-                src={img}
-              />
-            ))}
-          </ProductCarouselSideImgsContainer>
-          <ProductCarouselMainImg>
-            <img alt="main-product-img" src={this.state.selectedMainImg} />
-          </ProductCarouselMainImg>
-        </ProductCarouselContainer>
-        <ProductAttributesContainer>
-          <div>
-            <ProductBrand>{product.brand}</ProductBrand>
-            <ProductName>{product.name}</ProductName>
-          </div>
-          
-              {product.attributes.map(attr => <div key={attr.id}>
+      product && (
+        <PDPContainer>
+          <ProductCarouselContainer>
+            <ProductCarouselSideImgsContainer>
+              {product.gallery.map((img, i) => (
+                <ProductSideImg
+                  key={i}
+                  selected={this.state.selectedMainImg === img}
+                  onClick={() => this.selectImg(img)}
+                  alt="product-img"
+                  src={img}
+                />
+              ))}
+            </ProductCarouselSideImgsContainer>
+            <ProductCarouselMainImg>
+              <img alt="main-product-img" src={this.state.selectedMainImg} />
+            </ProductCarouselMainImg>
+          </ProductCarouselContainer>
+          <ProductAttributesContainer>
+            <div>
+              <ProductBrand>{product.brand}</ProductBrand>
+              <ProductName>{product.name}</ProductName>
+            </div>
+
+            {product.attributes.map((attr) => (
+              <div key={attr.id}>
                 <AttrTitle>{attr.id}</AttrTitle>
-                {attr.items.map(item => item.value[0] === "#" ? <ProductColor color={item.value} /> : <Attribute>{item.value}</Attribute>)}
-              </div>)}
-        
+                {attr.items.map((item) =>
+                  item.value[0] === "#" ? (
+                    <ProductColor color={item.value} />
+                  ) : (
+                    <Attribute>{item.value}</Attribute>
+                  )
+                )}
+              </div>
+            ))}
 
-          <div>
-            <AttrTitle>Price</AttrTitle>
-            <ProductPrice>$50.00</ProductPrice>
+            <div>
+              <AttrTitle>Price</AttrTitle>
+              <ProductPrice>$50.00</ProductPrice>
+            </div>
 
-          </div>
-
-          <AddToCartButton>Add to cart</AddToCartButton>
-          <ProductDescription>
-            {product.description.replace(/(<([^>]+)>)/ig, "")}
-          </ProductDescription>
-        </ProductAttributesContainer>
-      </PDPContainer>
+            <AddToCartButton>Add to cart</AddToCartButton>
+            <ProductDescription>
+              {product.description.replace(/(<([^>]+)>)/gi, "")}
+            </ProductDescription>
+          </ProductAttributesContainer>
+        </PDPContainer>
+      )
     );
   }
 }
-export default withRouter(ProductDetails)
+export default withRouter(ProductDetails);

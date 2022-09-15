@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import styled from "@emotion/styled";
 import arrowup from "../../imgs/arrow-up.svg";
 import arrowdown from "../../imgs/arrow-down.svg";
-import getCurrencies from "../../graphql/getCurrencies";
 import { connect } from "react-redux";
 
-// import 
+
 
 const DropdownContainer = styled("div")({
   marginRight: "25px",
@@ -47,43 +46,68 @@ const DropdownHeader = styled('div')({
 }, props => ({background: `url(${props.toggled ? arrowdown : arrowup}) no-repeat right`}))
 
  class CurrencyDropdownmenu extends Component {
-    state = {
-        open:false,
+  constructor(props) {
+    super(props)
+    this.wrapperRef = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.state = {
+          open:false,
+      }
+  }  
+  
+
+componentDidMount() {
+  document.addEventListener("mousedown", this.handleClickOutside)
+  console.log(this.props);
+  // this.props.getCurrencies()
+}
+//WARNING! To be deprecated in React v17. Use componentDidMount instead.
+
+
+ handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+      this.setState({open: false})
     }
+  }
+
     
-    // componentDidMount(){
-    // this.props.getCurrencies()
-    // }
+  
 
     toggleDropdown() {
         this.setState({open : !this.state.open})
     }
 
   render() {
-    // console.log(this.props.currencies);
     return (
-      <DropdownContainer>
+      <DropdownContainer ref={this.wrapperRef}>
         <DropdownHeader toggled={this.props.open}  onClick={this.toggleDropdown.bind(this)}>$</DropdownHeader>
         {this.state.open && 
         
           
         <DropdownList>
-          {this.props.currencies.map(currency => <li>{currency.symbol + ' ' + currency.label}</li> )}
-          {/* <li>$ USD</li>
-          <li>£ BSD</li>
+          {/* {this.props.currencies.map(currency => <li>{currency.symbol + ' ' + currency.label}</li> )} */}
+          {/* 
           <li>$ HSD</li> */}
+          <li>$ USD</li>
+          <li>£ BSD</li>
         </DropdownList>}
       </DropdownContainer>
     );
   }
 }
 
-const mapState = (state) => ({
-currencies: state.allCurrencies
-})
+const mapState = (state) => {
+  return {
 
-const mapDispatch = (dispatch) => ({
-  getCurrencies: () => dispatch.currencies.getCurrencies,
-})
+    currencies: state,
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+
+    getCurrencies:  dispatch,
+  }
+}
 
 export default connect(mapState, mapDispatch)(CurrencyDropdownmenu)

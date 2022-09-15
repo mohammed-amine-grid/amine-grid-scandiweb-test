@@ -15,8 +15,6 @@ const ProductPrice = styled("span")({
   fontWeight: "600",
 });
 
-
-
 const ProductColor = styled("span")(
   {
     display: "inline-block",
@@ -34,7 +32,7 @@ const ProductColor = styled("span")(
   })
 );
 
- const AttrTitle = styled("h5")({
+const AttrTitle = styled("h5")({
   fontWeight: "700",
   fontSize: "18px",
   textTransform: "uppercase",
@@ -42,8 +40,8 @@ const ProductColor = styled("span")(
   marginBottom: "8px",
 });
 
-const Attribute = styled('div')({
- display: "inline-block",
+const Attribute = styled("div")({
+  display: "inline-block",
   fontWeight: "600",
   fontSize: "14px",
   textAlign: "center",
@@ -57,7 +55,13 @@ const Attribute = styled('div')({
     backgroundColor: "black",
     color: "#fff",
   },
-})
+});
 
-
-export { ProductBrand, ProductColor, ProductName, Attribute, ProductPrice, AttrTitle };
+export {
+  ProductBrand,
+  ProductColor,
+  ProductName,
+  Attribute,
+  ProductPrice,
+  AttrTitle,
+};
