@@ -11,7 +11,7 @@ const getCategoryProducts = async (category) => {
         "brand",
         "inStock",
         "gallery",
-        "prices{amount}",
+        "prices{amount, currency{label, symbol}}",
       ])
     );
   try {

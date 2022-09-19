@@ -6,7 +6,7 @@ const getProduct = async (productId) => {
 
     const query = new Query("product", true)
    .addArgument("id", "String!", productId)   
-   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
+   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount, currency{label,symbol}}"])
 
     return await client.post(query)
   }

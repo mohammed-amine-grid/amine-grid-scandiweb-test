@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import styled from '@emotion/styled/macro';
 import cartIcon from '../imgs/circle-cart-icon.svg'
 import { Link } from 'react-router-dom';
-
+import { getPrice } from '../utils/getPrice';
+import { connect } from 'react-redux';
 
 const CardImg = styled('img') ({
   display:'block',
@@ -38,7 +39,6 @@ const CardText = styled('div')({
   })
   
   const Card = styled('div')({
-    // zIndex:'-999',
   width:'386px',
   height:'444px',
   padding:'16px',
@@ -46,10 +46,18 @@ const CardText = styled('div')({
   flexDirection:'column',
   position:'relative',
   cursor:'pointer',
+  a : {
+    textDecoration:'none',
+    color:'inherit'
+  },
   ":hover" : {
     boxShadow: '0px 4px 35px rgba(168, 172, 176, 0.19)',
     [AddToCartIcon]: {
-    opacity:'1'
+    opacity:'1',
+    transition:'0.5s',
+    ":hover" : {
+     transform:'scale(1.3)' 
+    }
   }  
   }
   },
@@ -58,9 +66,9 @@ const CardText = styled('div')({
     ":after": {
       position:'absolute',
       content:'""',
-      height:'444px',
+      height:'429px',
+      // maxHeight:'100%',
       width:'354px',
-      // zIndex:'99',
       backgroundColor:'rgba(255,255,255,0.7)'
     }
   })
@@ -77,23 +85,34 @@ const CardText = styled('div')({
     zIndex:'99'
   })
 
-  export default class ProductListingCard extends Component {
-   
-    render() {
-      const {brand, name, prices, inStock, gallery, id} = this.props
-      // const {inStock} = this.props
+ class ProductListingCard extends Component {
+
+   render() {
+     const {selectedCurrency} = this.props
+     const {brand, name, prices, inStock, gallery, id} = this.props
+     const price = getPrice(selectedCurrency, prices)
       return (
-      <Card inStock={inStock}>
+        <Card inStock={inStock}>
+        <Link to={`/product/${id}`}>
         <CardImg src={gallery[0]} />
-         {inStock && <Link to={`/product/${id}`}>
+         {inStock && 
          <AddToCartIcon alt='add-to-cart-button' src={cartIcon} />
-         </Link> }
+        }
           {!inStock && <OutOfStock>Out of stock</OutOfStock>}
         <CardText>
             <p>{brand + ' ' + name}</p>
-            <p>${prices[0].amount}</p>
+            <p>{selectedCurrency.symbol + ' ' + price}</p>
         </CardText>
+      </Link>
       </Card>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    selectedCurrency: state.currency.selectedCurrency
+  }
+}
+
+  export default connect(mapStateToProps)(ProductListingCard)

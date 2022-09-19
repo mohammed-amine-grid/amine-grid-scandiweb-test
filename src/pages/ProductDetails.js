@@ -10,7 +10,9 @@ import {
 } from "../components/ProductAttributes";
 import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
-// 611w 511h / 80 80
+import { connect } from "react-redux";
+import { getPrice } from "../utils/getPrice";
+
 
 const PDPContainer = styled("div")({
   display: "flex",
@@ -116,7 +118,6 @@ class ProductDetails extends Component {
     product: null,
   };
   componentDidMount() {
-    console.log(this.props.params);
     getProduct(this.props.params["*"]).then((res) =>
       this.setState({
         product: res.product,
@@ -135,9 +136,10 @@ class ProductDetails extends Component {
 
   render() {
     const product = this.state.product;
-    console.log(this.state?.product);
-    // getSizes(this.state?.product)
-    // let {name, id, gallery, attributes,} = this.state?.product
+    const {selectedCurrency} = this.props
+    const prices = product?.prices
+    const price = getPrice(selectedCurrency, prices); 
+    
 
     return (
       product && (
@@ -171,7 +173,7 @@ class ProductDetails extends Component {
                   item.value[0] === "#" ? (
                     <ProductColor color={item.value} />
                   ) : (
-                    <Attribute>{item.value}</Attribute>
+                    <Attribute key={item.id}>{item.value}</Attribute>
                   )
                 )}
               </div>
@@ -179,7 +181,7 @@ class ProductDetails extends Component {
 
             <div>
               <AttrTitle>Price</AttrTitle>
-              <ProductPrice>$50.00</ProductPrice>
+               <ProductPrice>{selectedCurrency?.symbol + ' ' + price}</ProductPrice>
             </div>
 
             <AddToCartButton>Add to cart</AddToCartButton>
@@ -192,4 +194,11 @@ class ProductDetails extends Component {
     );
   }
 }
-export default withRouter(ProductDetails);
+
+const mapStateToProps = (state) => {
+  return {
+    selectedCurrency: state.currency.selectedCurrency
+  }
+}
+
+export default connect(mapStateToProps)(withRouter(ProductDetails));
