@@ -98,42 +98,42 @@ const NavActions = styled("ul")({
   position: "relative",
   paddingRight: "30px",
   justifyContent: "flex-end",
-  ".cart-logo": {
-    cursor: "pointer",
-  },
+  // ".cart-logo": {
+  //   cursor: "pointer",
+  // },
   flex: "2",
 });
 
-const CartIconItmesNumber = styled("div")({
-  color: "white",
-  backgroundColor: "black",
-  textAlign: "center",
-  width: "1.2rem",
-  height: "1.2rem",
-  position: "absolute",
-  borderRadius: "50%",
-  bottom: 9,
-  right: 18,
-  fontSize: "14px",
-  fontWeight: "600",
-});
+// const CartIconItmesNumber = styled("div")({
+//   color: "white",
+//   backgroundColor: "black",
+//   textAlign: "center",
+//   width: "1.2rem",
+//   height: "1.2rem",
+//   position: "absolute",
+//   borderRadius: "50%",
+//   bottom: 9,
+//   right: 18,
+//   fontSize: "14px",
+//   fontWeight: "600",
+// });
 
-const GreyOverlay = styled("div")({
-  height: "100%",
-  width: "100%",
-  position: "absolute",
-  top: 0,
-  left: 0,
-  zIndex: 999,
-  backgroundColor: "#393748",
-  opacity: "22%",
-});
+// const GreyOverlay = styled("div")({
+//   height: "100%",
+//   width: "100%",
+//   position: "absolute",
+//   top: 0,
+//   left: 0,
+//   zIndex: 999,
+//   backgroundColor: "#393748",
+//   opacity: "22%",
+// });
 
 export default class Navbar extends Component {
   constructor(props) {
    super(props) 
-    this.wrapperRef = React.createRef();
-    this.handleClickOutside = this.handleClickOutside.bind(this); 
+    // this.wrapperRef = React.createRef();
+    // this.handleClickOutside = this.handleClickOutside.bind(this); 
    this.state = {
       categories: [],
       cartOverlayOpen: false,
@@ -141,7 +141,7 @@ export default class Navbar extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
+    // document.addEventListener("mousedown", this.handleClickOutside);
     getProductCategories().then((res) =>
       this.setState({
         categories: res,
@@ -150,15 +150,13 @@ export default class Navbar extends Component {
   }
 
 
-  handleClickOutside(event) {
-    if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
-      this.setState({ cartOverlayOpen: false });
-    }
-  }
+  // handleClickOutside(event) {
+  //   if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+  //     this.setState({ cartOverlayOpen: false });
+  //   }
+  // }
   render() {
     return (
-      <>
-        {this.state.cartOverlayOpen && <GreyOverlay />}
         <NavbarContainer>
           <CategoriesContainer>
             {this.state.categories &&
@@ -171,19 +169,19 @@ export default class Navbar extends Component {
           <img className="nav-log" src={navlogo} alt="nav-logo" />
           <NavActions className="actions">
             <CurrencyDropdownmenu />
-            <img
+            {/* <img
               onClick={() =>
                 this.setState({ cartOverlayOpen: !this.state.cartOverlayOpen })
               }
               className="cart-logo"
               src={cartlogo}
               alt="cart-logo"
-            />
-            <CartIconItmesNumber>3</CartIconItmesNumber>
+            /> */}
+            <Cartoverlay />
+            {/* <CartIconItmesNumber>3</CartIconItmesNumber> */}
           </NavActions>
-          {this.state.cartOverlayOpen && <Cartoverlay ref={this.wrapperRef} />}
+          {/* {this.state.cartOverlayOpen && <Cartoverlay ref={this.wrapperRef} />} */}
         </NavbarContainer>
-      </>
     );
   }
 }
