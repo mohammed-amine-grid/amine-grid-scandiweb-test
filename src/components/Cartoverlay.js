@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
 import CartItem from "./CartItem";
+import { connect } from "react-redux";
 const CartoverlayContainer = styled("div")({
+  // top:'200px',
+  position:'fixed',
+  top:80,
+  right:72,
   marginLeft: "20px",
   maxHeight: "677px",
   maxWidth: "325px",
+  backgroundColor:'#fff',
   padding: "32px 16px",
-  border: "1px solid black",
+  // border: "1px solid black",
   scrollbarWidth: "thin",
   scrollbarColor: "#5ECE7B white",
   "::-webkit-scrollbar": {
@@ -72,7 +78,12 @@ const CartActionsButton = styled("button")(
   })
 );
 
-export default class Cartoverlay extends Component {
+class Cartoverlay extends Component {
+
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   render() {
     return (
       <CartoverlayContainer>
@@ -81,7 +92,6 @@ export default class Cartoverlay extends Component {
         </CartoverlayHeader>
         <CartItem />
         <CartItem />
-        {/* <CartItem /> */}
         <CartoverlayPrice>
           <span>Total</span>
           <span>$200.00</span>
@@ -94,3 +104,11 @@ export default class Cartoverlay extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    state: state.cart
+  }
+}
+
+export default connect(mapStateToProps)(Cartoverlay)

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
-import arrowup from "../../imgs/arrow-up.svg";
-import arrowdown from "../../imgs/arrow-down.svg";
+import arrowup from "../imgs/arrow-up.svg";
+import arrowdown from "../imgs/arrow-down.svg";
 import { connect } from "react-redux";
-import { getCurrencyList, selectCurrency } from "../../app/actions/currency";
+import { getCurrencyList, selectCurrency } from "../app/actions/currency";
 
 const DropdownContainer = styled("div")({
   marginRight: "25px",
@@ -61,9 +61,7 @@ class CurrencyDropdownmenu extends Component {
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
     this.props.getCurrencyList();
-    console.log(this.props);
   }
-  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
 
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
@@ -77,6 +75,7 @@ class CurrencyDropdownmenu extends Component {
 
   handleCurrencySelection(curr) {
     this.props.selectCurrency(curr);
+    this.setState({open:false})
   }
 
   render() {

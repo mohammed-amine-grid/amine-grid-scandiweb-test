@@ -102,6 +102,7 @@ const AddToCartButton = styled("button")({
   fontSize: "16px",
   background: "#5ECE7B",
   textTransform: "uppercase",
+  cursor:'pointer'
 });
 
 const ProductDescription = styled("p")({
