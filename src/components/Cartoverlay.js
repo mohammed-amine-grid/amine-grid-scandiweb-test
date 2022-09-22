@@ -136,8 +136,11 @@ class Cartoverlay extends Component {
     return
   }
 
+
+
   render() {
     const { cartProductsList } = this.props.state;
+    console.log(cartProductsList[0] || 'hehe');
     return (
       <>
         <CartLogo
@@ -155,10 +158,9 @@ class Cartoverlay extends Component {
         {this.state.overlayOpen && (
           <CartoverlayContainer ref={this.overlayRef}>
             <CartoverlayHeader>
-              My Bag, <span>3 items</span>
+              My Bag, <span>{cartProductsList.length}</span>
             </CartoverlayHeader>
-            <CartItem />
-            <CartItem />
+            {cartProductsList.map(item =>  <CartItem {...item} />)}
             <CartoverlayPrice>
               <span>Total</span>
               <span>$200.00</span>

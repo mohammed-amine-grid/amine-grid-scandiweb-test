@@ -6,7 +6,18 @@ import { BrowserRouter } from "react-router-dom";
 import  './index.css'
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+
+import { saveCartState } from "./utils/cartLocalStorage";
+
+store.subscribe(() => {
+  saveCartState({
+    cart:store.getState().cart
+  })
+})
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+
 
 root.render(
   <React.StrictMode>

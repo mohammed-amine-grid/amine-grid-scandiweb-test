@@ -1,11 +1,12 @@
 const initState = {
-    cartProductsList : [], 
+    cartProductsList : [],
+    priceTotal:0 
     
 }
 
 const cart = (state = initState, action) => {
-    if(action.type === 'ADD_CART') {
-        return {...state, cartProductsList:action.payload}
+    if(action.type === 'ADD_TO_CART') {
+        return {...state, cartProductsList: [...state.cartProductsList, action.payload]}
     }
     else {
         return state;

@@ -12,6 +12,7 @@ import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
 import { connect } from "react-redux";
 import { getPrice } from "../utils/getPrice";
+import { addProductToCart } from "../app/actions/cart";
 
 
 const PDPContainer = styled("div")({
@@ -135,6 +136,11 @@ class ProductDetails extends Component {
     });
   }
 
+
+  addToCart(product) {
+    this.props.addProductToCart(product)
+  }
+
   render() {
     const product = this.state.product;
     const {selectedCurrency} = this.props
@@ -185,7 +191,7 @@ class ProductDetails extends Component {
                <ProductPrice>{selectedCurrency?.symbol + ' ' + price}</ProductPrice>
             </div>
 
-            <AddToCartButton>Add to cart</AddToCartButton>
+            <AddToCartButton onClick={() => this.addToCart(product)}>Add to cart</AddToCartButton>
             <ProductDescription>
               {product.description.replace(/(<([^>]+)>)/gi, "")}
             </ProductDescription>
@@ -202,4 +208,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(withRouter(ProductDetails));
+export default connect(mapStateToProps, {addProductToCart})(withRouter(ProductDetails));

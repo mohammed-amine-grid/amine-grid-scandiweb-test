@@ -1,1 +1,1 @@
-export const addProductToCart = (payload) => ({type:'ADD_CART', payload:payload})
+export const addProductToCart = (payload) => ({type:'ADD_TO_CART', payload:payload})

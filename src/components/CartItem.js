@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled/macro";
-import product from "../product.jpg";
 
-import { ProductBrand, ProductName, ProductColor, Attribute, ProductPrice } from "./ProductAttributes";
+import { ProductBrand, ProductName, ProductColor, Attribute, ProductPrice, AttrTitle } from "./ProductAttributes";
+import { getPrice } from "../utils/getPrice";
+import { connect } from "react-redux";
 
 const CartItemContainer = styled("div")(
   { 
@@ -133,30 +134,33 @@ const CartItemQuantity = styled("div")({
 });
 
 
-export default class CartItem extends Component {
+ class CartItem extends Component {
   cartpageDisplay = this.props.cartpageDisplay;
   render() {
+    const {brand, attributes, name, prices, gallery, selectedCurrency} = this.props;
+    console.log(selectedCurrency);
+    const price = getPrice(selectedCurrency, prices)
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
         <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
           <div>
-            <ProductBrand>Apollo</ProductBrand>
-            <ProductName>Running Shorts</ProductName>
-            <ProductPrice>$50.00</ProductPrice>
+            <ProductBrand>{brand}</ProductBrand>
+            <ProductName>{name}</ProductName>
+            <ProductPrice>{selectedCurrency?.symbol + ' ' + price}</ProductPrice>
           </div>
-          <div>
-            <h5>Size:</h5>
-            <Attribute>XS</Attribute>
-            <Attribute>M</Attribute>
-          </div>
-
-          <div>
-            <h5>Color:</h5>
-            <ProductColor color="red" />
-            <ProductColor color="green" />
-            <ProductColor color="orange" />
-            <ProductColor color="blue" />
-          </div>
+          {attributes.map((attr) => (
+              <div key={attr.id}>
+                <AttrTitle>{attr.id}</AttrTitle>
+                {attr.items.map((item) =>
+                  item.value[0] === "#" ? (
+                    <ProductColor color={item.value} />
+                  ) : (
+                    <Attribute key={item.id}>{item.value}</Attribute>
+                  )
+                )}
+              </div>
+            ))}
+        
         </CartItemAttributesContainer>
         <CartItemImageContainer cartpageDisplay={this.cartpageDisplay}>
           <CartItemQuantity>
@@ -164,9 +168,17 @@ export default class CartItem extends Component {
             <span>2</span>
             <button>-</button>
           </CartItemQuantity>
-          <img alt="src" src={product} />
+          <img alt="src" src={gallery[0]} />
         </CartItemImageContainer>
       </CartItemContainer>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    selectedCurrency: state.currency.selectedCurrency
+  }
+}
+
+export default connect(mapStateToProps)(CartItem)
