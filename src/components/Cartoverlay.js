@@ -140,7 +140,7 @@ class Cartoverlay extends Component {
 
   render() {
     const { cartProductsList, quantity } = this.props.state;
-    console.log(cartProductsList[0] || 'hehe');
+    // console.log(cartProductsList[0] || 'hehe');
     return (
       <>
         <CartLogo
@@ -160,7 +160,7 @@ class Cartoverlay extends Component {
             <CartoverlayHeader>
               My Bag, <span>{cartProductsList.length}</span>
             </CartoverlayHeader>
-            {cartProductsList.map(item =>  <CartItem {...item} />)}
+            {cartProductsList.map(item =>  <CartItem key={item.id} {...item} />)}
             <CartoverlayPrice>
               <span>Total</span>
               <span>$200.00</span>

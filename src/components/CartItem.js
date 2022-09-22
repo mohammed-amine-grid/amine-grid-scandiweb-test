@@ -4,6 +4,7 @@ import styled from "@emotion/styled/macro";
 import { ProductBrand, ProductName, ProductColor, Attribute, ProductPrice, AttrTitle } from "./ProductAttributes";
 import { getPrice } from "../utils/getPrice";
 import { connect } from "react-redux";
+import { incrementProduct, decrementProduct } from "../app/actions/cart";
 
 const CartItemContainer = styled("div")(
   { 
@@ -136,9 +137,19 @@ const CartItemQuantity = styled("div")({
 
  class CartItem extends Component {
   cartpageDisplay = this.props.cartpageDisplay;
+
+
+  handleIncrement(id) {
+    console.log(this.props);
+    this.props.incrementProduct(id)
+  }
+
+  handleDecrement(id) {
+  this.props.decrementProduct(id)
+  }
+
   render() {
-    const {brand, attributes, name, prices, gallery, selectedCurrency, quantity} = this.props;
-    console.log(selectedCurrency);
+    const { id,brand, attributes, name, prices, gallery, selectedCurrency, quantity} = this.props;
     const price = getPrice(selectedCurrency, prices)
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
@@ -164,9 +175,9 @@ const CartItemQuantity = styled("div")({
         </CartItemAttributesContainer>
         <CartItemImageContainer cartpageDisplay={this.cartpageDisplay}>
           <CartItemQuantity>
-            <button>+</button>
+            <button onClick={() => this.handleIncrement(id)}>+</button>
             <span>{quantity}</span>
-            <button>-</button>
+            <button onClick={() => this.handleDecrement(id)}>-</button>
           </CartItemQuantity>
           <img alt="src" src={gallery[0]} />
         </CartItemImageContainer>
@@ -181,4 +192,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(CartItem)
+export default connect(mapStateToProps,{incrementProduct, decrementProduct})(CartItem)
+
