@@ -138,7 +138,9 @@ class ProductDetails extends Component {
 
 
   addToCart(product) {
-    this.props.addProductToCart(product)
+    let addedProduct = {...product, quantity:1}
+    console.log(addedProduct);
+    this.props.addProductToCart(addedProduct)
   }
 
   render() {

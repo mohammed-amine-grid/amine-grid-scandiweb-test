@@ -139,7 +139,7 @@ class Cartoverlay extends Component {
 
 
   render() {
-    const { cartProductsList } = this.props.state;
+    const { cartProductsList, quantity } = this.props.state;
     console.log(cartProductsList[0] || 'hehe');
     return (
       <>
@@ -152,8 +152,8 @@ class Cartoverlay extends Component {
         />
         {this.state.overlayOpen && <GreyOverlay />}
 
-        {cartProductsList.length ? (
-          <CartIconItmesNumber>{cartProductsList.length}</CartIconItmesNumber>
+        {quantity !== 0 ? (
+          <CartIconItmesNumber>{quantity}</CartIconItmesNumber>
         ) : undefined}
         {this.state.overlayOpen && (
           <CartoverlayContainer ref={this.overlayRef}>

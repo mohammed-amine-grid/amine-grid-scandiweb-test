@@ -137,7 +137,7 @@ const CartItemQuantity = styled("div")({
  class CartItem extends Component {
   cartpageDisplay = this.props.cartpageDisplay;
   render() {
-    const {brand, attributes, name, prices, gallery, selectedCurrency} = this.props;
+    const {brand, attributes, name, prices, gallery, selectedCurrency, quantity} = this.props;
     console.log(selectedCurrency);
     const price = getPrice(selectedCurrency, prices)
     return (
@@ -165,7 +165,7 @@ const CartItemQuantity = styled("div")({
         <CartItemImageContainer cartpageDisplay={this.cartpageDisplay}>
           <CartItemQuantity>
             <button>+</button>
-            <span>2</span>
+            <span>{quantity}</span>
             <button>-</button>
           </CartItemQuantity>
           <img alt="src" src={gallery[0]} />
