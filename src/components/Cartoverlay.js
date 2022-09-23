@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import CartItem from "./CartItem";
 import { connect } from "react-redux";
 import cartlogo from "../imgs/cart.svg";
+import { calculateTotal } from "../utils/getPrice";
 
 const CartLogo = styled("img")({
   cursor: "pointer",
@@ -27,9 +28,9 @@ const GreyOverlay = styled("div")({
   width: "100%",
   position: "fixed",
   top: 80,
-  left:0,
-  right:0,
-  bottom:0,
+  left: 0,
+  right: 0,
+  bottom: 0,
   zIndex: -1,
   backgroundColor: "#393748",
   opacity: "22%",
@@ -116,31 +117,31 @@ class Cartoverlay extends Component {
   constructor(props) {
     super(props);
     this.overlayRef = React.createRef();
-    this.handleClickOutside = this.handleClickOutside.bind(this); 
+    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.state = {
       overlayOpen: false,
     };
   }
 
   componentDidMount() {
-
-        document.addEventListener("mousedown", this.handleClickOutside);
-        
+    document.addEventListener("mousedown", this.handleClickOutside);
   }
 
-    handleClickOutside(event) {
-      // console.log(this.overlayRef);
-    if (this.overlayRef.current && !this.overlayRef.current.contains(event.target)) {
+  handleClickOutside(event) {
+    // console.log(this.overlayRef);
+    if (
+      this.overlayRef.current &&
+      !this.overlayRef.current.contains(event.target)
+    ) {
       this.setState({ overlayOpen: false });
     }
-    return
+    return;
   }
-
-
 
   render() {
     const { cartProductsList, quantity } = this.props.state;
-    // console.log(cartProductsList[0] || 'hehe');
+    const {selectedCurrency} = this.props.currency;
+    // console.log(this.props);
     return (
       <>
         <CartLogo
@@ -160,10 +161,12 @@ class Cartoverlay extends Component {
             <CartoverlayHeader>
               My Bag, <span>{cartProductsList.length}</span>
             </CartoverlayHeader>
-            {cartProductsList.map(item =>  <CartItem key={item.id} {...item} />)}
+            {cartProductsList.map((item) => (
+              <CartItem key={item.id} {...item} />
+            ))}
             <CartoverlayPrice>
               <span>Total</span>
-              <span>$200.00</span>
+              <span>{selectedCurrency.symbol + ' ' + calculateTotal(cartProductsList, selectedCurrency).toFixed(2)}</span>
             </CartoverlayPrice>
             <CartActionsContainer>
               <CartActionsButton>View Bag</CartActionsButton>
@@ -179,6 +182,8 @@ class Cartoverlay extends Component {
 const mapStateToProps = (state) => {
   return {
     state: state.cart,
+    currency: state.currency
+    // selectedCurrency: state.selectedCurrency
   };
 };
 
