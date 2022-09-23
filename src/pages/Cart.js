@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import CartItem from "../components/CartItem";
 
 const CartPageContainer = styled("div")({
@@ -44,12 +45,16 @@ const CartPageOrderButton = styled('button')({
 })
 
 
-export default class Cart extends Component {
+ class Cart extends Component {
   render() {
+        const { cartProductsList, quantity } = this.props.state;
+
     return (
       <CartPageContainer>
-        <CartItem cartpageDisplay />
-        <CartItem cartpageDisplay />
+        {cartProductsList.map((item) => (
+              <CartItem cartpageDisplay key={item.id} {...item} />
+            ))}
+    
 
         <CartPageOrderContainer>
 
@@ -59,7 +64,7 @@ export default class Cart extends Component {
           </div>
           <div>
             <span>Quanity: </span>
-            <span>3</span>
+            <span>{quantity}</span>
           </div>
           <div>
             <span>Total:</span>
@@ -72,3 +77,12 @@ export default class Cart extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+       state: state.cart,
+    currency: state.currency
+  }
+}
+
+export default connect(mapStateToProps)(Cart)

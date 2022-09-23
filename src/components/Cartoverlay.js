@@ -159,7 +159,7 @@ class Cartoverlay extends Component {
         {this.state.overlayOpen && (
           <CartoverlayContainer ref={this.overlayRef}>
             <CartoverlayHeader>
-              My Bag, <span>{cartProductsList.length}</span>
+              My Bag, <span>{quantity}</span>
             </CartoverlayHeader>
             {cartProductsList.map((item) => (
               <CartItem key={item.id} {...item} />

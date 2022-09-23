@@ -6,11 +6,14 @@ import { getPrice } from "../utils/getPrice";
 import { connect } from "react-redux";
 import { incrementProduct, decrementProduct } from "../app/actions/cart";
 
+import caretLeft from '../imgs/CaretLeft.svg'
+import caretRight from '../imgs/CaretRight.svg'
 const CartItemContainer = styled("div")(
   { 
     margin:'0',
     display: "flex",
     marginBottom: "40px",
+    // maxHeight:'200px',
     h5: {
       fontWeight: "300",
     },
@@ -71,40 +74,61 @@ const CartItemAttributesContainer = styled("div")(
 );
 
 
+
+
+
+
 const CartItemImageContainer = styled("div")(
   {
     display: "flex",
-    flex: "1",
-    img: {
+    flex:1,
+    position:"relative",
+ 
+  },
+  ({ cartpageDisplay }) =>
+  cartpageDisplay && {
+    justifyContent: "flex-end",
+    [ItemImage]: {
+      marginLeft: "24px",
+      minHeight: "288px",
+      maxWidth: "200px",
+    },
+    [CartItemQuantity]: {
+      fontSize: "24px",
+      button :{
+        height:'45px',
+        width:'45px',
+        fontSize:'30px',
+        fontWeight:'300'
+      }
+    },
+  }
+  );
+
+  const ItemImage = styled('img')({
       marginLeft: "8px",
       display: "block",
       minHeight: "190px",
       minWidth: "121px",
       maxHeight: "100%",
       maxWidth: "100%",
-    },
-  },
-  ({ cartpageDisplay }) =>
-    cartpageDisplay && {
-      justifyContent: "flex-end",
-      "img": {
-        marginLeft: "24px",
-        minHeight: "288px",
-        maxWidth: "200px",
-      },
-      [CartItemQuantity]: {
-        fontSize: "24px",
-        button :{
-          height:'45px',
-          width:'45px',
-          fontSize:'30px',
-          fontWeight:'300'
-        }
-      },
-    }
-);
+  })
 
-const CartItemQuantity = styled("div")({
+
+  const LeftArrow = styled("img") ({
+  position:'absolute',
+  bottom:10,
+  right:40,
+  cursor:"pointer"
+  })
+  
+  const RightArrow = styled(LeftArrow)({
+    bottom:10,
+    right:5,
+
+  })
+  
+  const CartItemQuantity = styled("div")({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -137,7 +161,7 @@ const CartItemQuantity = styled("div")({
 
  class CartItem extends Component {
   cartpageDisplay = this.props.cartpageDisplay;
-
+  state = { selectedImgSrc: this.props.gallery[0], selectedImgIndex:0}
 
   handleIncrement(id) {
     console.log(this.props);
@@ -147,6 +171,19 @@ const CartItemQuantity = styled("div")({
   handleDecrement(id) {
   this.props.decrementProduct(id)
   }
+
+
+
+handleChangeImg(gallery, order) {
+const lastImgIndex = gallery.length - 1;
+const currentIndex = this.state.selectedImgIndex;
+if(order === 'next') {
+  currentIndex === lastImgIndex ? this.setState({selectedImgSrc:gallery[0], selectedImgIndex:0}) : this.setState({selectedImgSrc:gallery[currentIndex + 1], selectedImgIndex: currentIndex + 1})
+}
+else if(order === 'previous') {
+currentIndex === 0 ? this.setState({selectedImgSrc:gallery[lastImgIndex], selectedImgIndex:lastImgIndex}) : this.setState({selectedImgSrc:gallery[currentIndex - 1], selectedImgIndex: currentIndex - 1})
+}
+}
 
   render() {
     const { id,brand, attributes, name, prices, gallery, selectedCurrency, quantity} = this.props;
@@ -179,7 +216,12 @@ const CartItemQuantity = styled("div")({
             <span>{quantity}</span>
             <button onClick={() => this.handleDecrement(id)}>-</button>
           </CartItemQuantity>
-          <img alt="src" src={gallery[0]} />
+          <ItemImage  alt="src" src={this.state.selectedImgSrc} />
+          {this.cartpageDisplay && 
+          <>
+          <LeftArrow onClick={() => this.handleChangeImg(gallery, 'previous')}  alt="left" src={caretLeft} />
+          <RightArrow onClick={() => this.handleChangeImg(gallery, 'next')} src={caretRight} />
+          </>}
         </CartItemImageContainer>
       </CartItemContainer>
     );
