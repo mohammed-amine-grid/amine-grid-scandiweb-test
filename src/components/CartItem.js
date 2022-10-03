@@ -1,16 +1,27 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled/macro";
 
-import { ProductBrand, ProductName, ProductColor, Attribute, ProductPrice, AttrTitle } from "./ProductAttributes";
+import {
+  ProductBrand,
+  ProductName,
+  ProductColor,
+  Attribute,
+  ProductPrice,
+  AttrTitle,
+} from "./ProductAttributes";
 import { getPrice } from "../utils/getPrice";
 import { connect } from "react-redux";
-import { incrementProduct, decrementProduct } from "../app/actions/cart";
+import {
+  incrementProduct,
+  decrementProduct,
+  changeAttribute,
+} from "../app/actions/cart";
 
-import caretLeft from '../imgs/CaretLeft.svg'
-import caretRight from '../imgs/CaretRight.svg'
+import caretLeft from "../imgs/CaretLeft.svg";
+import caretRight from "../imgs/CaretRight.svg";
 const CartItemContainer = styled("div")(
-  { 
-    margin:'0',
+  {
+    margin: "0",
     display: "flex",
     marginBottom: "40px",
     // maxHeight:'200px',
@@ -26,11 +37,11 @@ const CartItemContainer = styled("div")(
       borderColor: "#E5E5E5",
       paddingTop: "24px",
       paddingBottom: "24px",
-      h5:{
-        fontSize:'18px',
-        fontFamily:'Roboto Condensed',
-        fontWeight:'700'
-      }
+      h5: {
+        fontSize: "18px",
+        fontFamily: "Roboto Condensed",
+        fontWeight: "700",
+      },
     }
 );
 
@@ -41,94 +52,86 @@ const CartItemAttributesContainer = styled("div")(
     flex: "1",
     justifyContent: "space-between",
     "& * > *": {
-      marginTop:'4px'
+      marginTop: "4px",
     },
   },
   ({ cartpageDisplay }) =>
-  cartpageDisplay && {
-    [ProductBrand] : {
-        fontSize:'30px',
-        fontWeight:'600'
+    cartpageDisplay && {
+      [ProductBrand]: {
+        fontSize: "30px",
+        fontWeight: "600",
       },
       [ProductName]: {
-        fontWeight:'400',
-        fontSize:'30px'
+        fontWeight: "400",
+        fontSize: "30px",
       },
       [ProductPrice]: {
         fontSize: "24px",
         fontWeight: "700",
-        marginTop:'20px',
+        marginTop: "20px",
       },
       [Attribute]: {
-        height:'45px',
-        width:'63px',
-        lineHeight:'44px',
-        fontSize:'16px',
-        letterSpacing:'0.05em'
+        height: "45px",
+        width: "63px",
+        lineHeight: "44px",
+        fontSize: "16px",
+        letterSpacing: "0.05em",
       },
-    [ProductColor]: {
-      height:'32px',
-      width:'32px',
-    }
+      [ProductColor]: {
+        height: "32px",
+        width: "32px",
+      },
     }
 );
-
-
-
-
-
 
 const CartItemImageContainer = styled("div")(
   {
     display: "flex",
-    flex:1,
-    position:"relative",
- 
+    flex: 1,
+    position: "relative",
   },
   ({ cartpageDisplay }) =>
-  cartpageDisplay && {
-    justifyContent: "flex-end",
-    [ItemImage]: {
-      marginLeft: "24px",
-      minHeight: "288px",
-      maxWidth: "200px",
-    },
-    [CartItemQuantity]: {
-      fontSize: "24px",
-      button :{
-        height:'45px',
-        width:'45px',
-        fontSize:'30px',
-        fontWeight:'300'
-      }
-    },
-  }
-  );
+    cartpageDisplay && {
+      justifyContent: "flex-end",
+      [ItemImage]: {
+        marginLeft: "24px",
+        minHeight: "288px",
+        maxWidth: "200px",
+      },
+      [CartItemQuantity]: {
+        fontSize: "24px",
+        button: {
+          height: "45px",
+          width: "45px",
+          fontSize: "30px",
+          fontWeight: "300",
+        },
+      },
+    }
+);
 
-  const ItemImage = styled('img')({
-      marginLeft: "8px",
-      display: "block",
-      minHeight: "190px",
-      minWidth: "121px",
-      maxHeight: "100%",
-      maxWidth: "100%",
-  })
+const ItemImage = styled("img")({
+  marginLeft: "8px",
+  display: "block",
+  minHeight: "190px",
+  minWidth: "121px",
+  maxHeight: "100%",
+  maxWidth: "100%",
+});
 
+const LeftArrow = styled("img")({
+  position: "absolute",
+  bottom: 10,
+  right: 40,
+  cursor: "pointer",
+});
 
-  const LeftArrow = styled("img") ({
-  position:'absolute',
-  bottom:10,
-  right:40,
-  cursor:"pointer"
-  })
-  
-  const RightArrow = styled(LeftArrow)({
-    bottom:10,
-    right:5,
+const RightArrow = styled(LeftArrow)({
+  bottom: 10,
+  right: 5,
+});
 
-  })
-  
-  const CartItemQuantity = styled("div")({
+const CartItemQuantity = styled("div")({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -158,57 +161,114 @@ const CartItemImageContainer = styled("div")(
   },
 });
 
-
- class CartItem extends Component {
+class CartItem extends Component {
   cartpageDisplay = this.props.cartpageDisplay;
-  state = { selectedImgSrc: this.props.gallery[0], selectedImgIndex:0}
+  state = { selectedImgSrc: this.props.gallery[0], selectedImgIndex: 0 };
 
   handleIncrement(id) {
     console.log(this.props);
-    this.props.incrementProduct(id)
+    this.props.incrementProduct(id);
   }
 
   handleDecrement(id) {
-  this.props.decrementProduct(id)
+    this.props.decrementProduct(id);
   }
 
+  selectAttribute(selectedAttr) {
+    console.log("hehehe");
+    this.props.changeAttribute(selectedAttr);
+  }
 
-
-handleChangeImg(gallery, order) {
-const lastImgIndex = gallery.length - 1;
-const currentIndex = this.state.selectedImgIndex;
-if(order === 'next') {
-  currentIndex === lastImgIndex ? this.setState({selectedImgSrc:gallery[0], selectedImgIndex:0}) : this.setState({selectedImgSrc:gallery[currentIndex + 1], selectedImgIndex: currentIndex + 1})
-}
-else if(order === 'previous') {
-currentIndex === 0 ? this.setState({selectedImgSrc:gallery[lastImgIndex], selectedImgIndex:lastImgIndex}) : this.setState({selectedImgSrc:gallery[currentIndex - 1], selectedImgIndex: currentIndex - 1})
-}
-}
+  handleChangeImg(gallery, order) {
+    const lastImgIndex = gallery.length - 1;
+    const currentIndex = this.state.selectedImgIndex;
+    if (order === "next") {
+      currentIndex === lastImgIndex
+        ? this.setState({ selectedImgSrc: gallery[0], selectedImgIndex: 0 })
+        : this.setState({
+            selectedImgSrc: gallery[currentIndex + 1],
+            selectedImgIndex: currentIndex + 1,
+          });
+    } else if (order === "previous") {
+      currentIndex === 0
+        ? this.setState({
+            selectedImgSrc: gallery[lastImgIndex],
+            selectedImgIndex: lastImgIndex,
+          })
+        : this.setState({
+            selectedImgSrc: gallery[currentIndex - 1],
+            selectedImgIndex: currentIndex - 1,
+          });
+    }
+  }
 
   render() {
-    const { id,brand, attributes, name, prices, gallery, selectedCurrency, quantity} = this.props;
-    const price = getPrice(selectedCurrency, prices)
+    const {
+      id,
+      brand,
+      attributes,
+      name,
+      prices,
+      gallery,
+      selectedCurrency,
+      quantity,
+      selectedAttrs,
+    } = this.props;
+    const price = getPrice(selectedCurrency, prices);
+    // console.log(selectedAttrs);
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
         <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
           <div>
             <ProductBrand>{brand}</ProductBrand>
             <ProductName>{name}</ProductName>
-            <ProductPrice>{selectedCurrency?.symbol + ' ' + price}</ProductPrice>
+            <ProductPrice>
+              {selectedCurrency?.symbol + " " + price}
+            </ProductPrice>
           </div>
           {attributes.map((attr) => (
-              <div key={attr.id}>
-                <AttrTitle>{attr.id}</AttrTitle>
-                {attr.items.map((item) =>
-                  item.value[0] === "#" ? (
-                    <ProductColor color={item.value} />
-                  ) : (
-                    <Attribute key={item.id}>{item.value}</Attribute>
-                  )
-                )}
-              </div>
-            ))}
-        
+            <div key={attr.id}>
+              <AttrTitle>{attr.id}</AttrTitle>
+              {attr.items.map((item) =>
+                item.value[0] === "#" ? (
+                  <ProductColor
+                    onClick={() =>
+                      this.selectAttribute({
+                        productId: id,
+                        attrId: attr.id,
+                        attrValue: item.value,
+                      })
+                    }
+                    selected={selectedAttrs.some(
+                      (selectedAttr) =>
+                        selectedAttr.id === attr.id &&
+                        selectedAttr.value === item.value
+                    )}
+                    key={item.id}
+                    color={item.value}
+                  />
+                ) : (
+                  <Attribute
+                    onClick={() =>
+                      this.selectAttribute({
+                        productId: id,
+                        attrId: attr.id,
+                        attrValue: item.value,
+                      })
+                    }
+                    isColor={item.value[0] === "#"}
+                    selected={selectedAttrs.some(
+                      (option) =>
+                        option.id === attr.id && option.value === item.value
+                    )}
+                    key={item.id}
+                  >
+                    {item.value}
+                  </Attribute>
+                )
+              )}
+            </div>
+          ))}
         </CartItemAttributesContainer>
         <CartItemImageContainer cartpageDisplay={this.cartpageDisplay}>
           <CartItemQuantity>
@@ -216,12 +276,20 @@ currentIndex === 0 ? this.setState({selectedImgSrc:gallery[lastImgIndex], select
             <span>{quantity}</span>
             <button onClick={() => this.handleDecrement(id)}>-</button>
           </CartItemQuantity>
-          <ItemImage  alt="src" src={this.state.selectedImgSrc} />
-          {this.cartpageDisplay && 
-          <>
-          <LeftArrow onClick={() => this.handleChangeImg(gallery, 'previous')}  alt="left" src={caretLeft} />
-          <RightArrow onClick={() => this.handleChangeImg(gallery, 'next')} src={caretRight} />
-          </>}
+          <ItemImage alt="src" src={this.state.selectedImgSrc} />
+          {this.cartpageDisplay && (
+            <>
+              <LeftArrow
+                onClick={() => this.handleChangeImg(gallery, "previous")}
+                alt="left"
+                src={caretLeft}
+              />
+              <RightArrow
+                onClick={() => this.handleChangeImg(gallery, "next")}
+                src={caretRight}
+              />
+            </>
+          )}
         </CartItemImageContainer>
       </CartItemContainer>
     );
@@ -230,9 +298,12 @@ currentIndex === 0 ? this.setState({selectedImgSrc:gallery[lastImgIndex], select
 
 const mapStateToProps = (state) => {
   return {
-    selectedCurrency: state.currency.selectedCurrency
-  }
-}
+    selectedCurrency: state.currency.selectedCurrency,
+  };
+};
 
-export default connect(mapStateToProps,{incrementProduct, decrementProduct})(CartItem)
-
+export default connect(mapStateToProps, {
+  incrementProduct,
+  decrementProduct,
+  changeAttribute,
+})(CartItem);

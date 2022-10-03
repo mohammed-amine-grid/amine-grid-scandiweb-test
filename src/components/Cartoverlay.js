@@ -139,6 +139,7 @@ class Cartoverlay extends Component {
   }
 
   render() {
+    // console.log(this.props);
     const { cartProductsList, quantity } = this.props.state;
     const {selectedCurrency} = this.props.currency;
     // console.log(this.props);
@@ -183,7 +184,6 @@ const mapStateToProps = (state) => {
   return {
     state: state.cart,
     currency: state.currency
-    // selectedCurrency: state.selectedCurrency
   };
 };
 

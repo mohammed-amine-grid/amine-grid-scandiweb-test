@@ -4,3 +4,4 @@ export const decrementProduct = (payload) => ({type:'DECREMENT_QUANTITY', payloa
 
 export const incrementProduct = (payload) => ({type:'INCREMENT_QUANTITY', payload:payload})
 
+export const changeAttribute = (payload) => ({type:'CHANGE_ATTRIBUTES', payload: payload})

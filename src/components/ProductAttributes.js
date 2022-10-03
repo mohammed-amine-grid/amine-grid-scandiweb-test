@@ -29,7 +29,10 @@ const ProductColor = styled("span")(
   },
   ({ color }) => ({
     backgroundColor: `${color}`,
-  })
+  }), ({selected}) => selected && {
+     outline: "3px solid #5ECE7B",
+      outlineOffset: "1px",
+  }
 );
 
 const AttrTitle = styled("h5")({
@@ -55,6 +58,9 @@ const Attribute = styled("div")({
     backgroundColor: "black",
     color: "#fff",
   },
+}, ({selected}) => selected && {
+  backgroundColor:'black',
+  color:"#fff"
 });
 
 export {

@@ -12,8 +12,9 @@ import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
 import { connect } from "react-redux";
 import { getPrice } from "../utils/getPrice";
-import { addProductToCart } from "../app/actions/cart";
+import { getAttributes } from "../utils/attributes";
 
+import { addProductToCart } from "../app/actions/cart";
 
 const PDPContainer = styled("div")({
   display: "flex",
@@ -103,7 +104,7 @@ const AddToCartButton = styled("button")({
   fontSize: "16px",
   background: "#5ECE7B",
   textTransform: "uppercase",
-  cursor:'pointer'
+  cursor: "pointer",
 });
 
 const ProductDescription = styled("p")({
@@ -120,13 +121,16 @@ class ProductDetails extends Component {
     product: null,
   };
   componentDidMount() {
-    getProduct(this.props.params["*"]).then((res) =>
+    getProduct(this.props.params["*"]).then(({ product }) => {
+      const attrs = product?.attributes;
+
       this.setState({
-        product: res.product,
-        selectedMainImg: res.product.gallery[0],
-      })
-    );
+        product: { ...product, selectedAttrs: getAttributes(attrs) },
+        selectedMainImg: product.gallery[0],
+      });
+    });
   }
+
   selectImg(img) {
     this.setState((prevState, _) => {
       if (prevState.selectedMainImg === img) return;
@@ -136,19 +140,39 @@ class ProductDetails extends Component {
     });
   }
 
-
   addToCart(product) {
-    let addedProduct = {...product, quantity:1}
-    console.log(addedProduct);
-    this.props.addProductToCart(addedProduct)
+    let addedProduct = { ...product, quantity: 1 };
+    this.props.addProductToCart(addedProduct);
+  }
+
+  selectAttribute(selectedAttr) {
+    const selectedAttrs = [...this.state.product.selectedAttrs];
+
+   const newSelectedAttributes =  selectedAttrs.map(attr => attr.id === selectedAttr.id ? {...attr, value: selectedAttr.value} : attr)
+
+    // const index = newSelectedAttribute.find(
+    //   (attr) => attr.id === selectedAttr.id
+    // );
+    // index.value = selectedAttr.value;
+    
+    // console.log(index);
+
+    // if (index) {
+      this.setState({
+        product: {
+          ...this.state.product,
+          selectedAttrs: [...newSelectedAttributes],
+        },
+      });
+    // }
   }
 
   render() {
     const product = this.state.product;
-    const {selectedCurrency} = this.props
-    const prices = product?.prices
-    const price = getPrice(selectedCurrency, prices); 
-    
+    // console.log(product);
+    const { selectedCurrency } = this.props;
+    const prices = product?.prices;
+    const price = getPrice(selectedCurrency, prices);
 
     return (
       product && (
@@ -180,9 +204,32 @@ class ProductDetails extends Component {
                 <AttrTitle>{attr.id}</AttrTitle>
                 {attr.items.map((item) =>
                   item.value[0] === "#" ? (
-                    <ProductColor color={item.value} />
+                    <ProductColor
+                      selected={product.selectedAttrs.some(
+                        (selectedAttr) =>
+                          selectedAttr.id === attr.id &&
+                          selectedAttr.value === item.value
+                      )}
+                      onClick={() =>
+                        this.selectAttribute({ id: attr.id, value: item.value })
+                      }
+                      key={item.id}
+                      color={item.value}
+                    />
                   ) : (
-                    <Attribute key={item.id}>{item.value}</Attribute>
+                    <Attribute
+                      onClick={() =>
+                        this.selectAttribute({ id: attr.id, value: item.value })
+                      }
+                      selected={product.selectedAttrs.some(
+                        (selectedAttr) =>
+                          selectedAttr.id === attr.id &&
+                          selectedAttr.value === item.value
+                      )}
+                      key={item.id}
+                    >
+                      {item.value}
+                    </Attribute>
                   )
                 )}
               </div>
@@ -190,10 +237,14 @@ class ProductDetails extends Component {
 
             <div>
               <AttrTitle>Price</AttrTitle>
-               <ProductPrice>{selectedCurrency?.symbol + ' ' + price}</ProductPrice>
+              <ProductPrice>
+                {selectedCurrency?.symbol + " " + price}
+              </ProductPrice>
             </div>
 
-            <AddToCartButton onClick={() => this.addToCart(product)}>Add to cart</AddToCartButton>
+            <AddToCartButton onClick={() => this.addToCart(product)}>
+              Add to cart
+            </AddToCartButton>
             <ProductDescription>
               {product.description.replace(/(<([^>]+)>)/gi, "")}
             </ProductDescription>
@@ -206,8 +257,10 @@ class ProductDetails extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    selectedCurrency: state.currency.selectedCurrency
-  }
-}
+    selectedCurrency: state.currency.selectedCurrency,
+  };
+};
 
-export default connect(mapStateToProps, {addProductToCart})(withRouter(ProductDetails));
+export default connect(mapStateToProps, { addProductToCart })(
+  withRouter(ProductDetails)
+);
