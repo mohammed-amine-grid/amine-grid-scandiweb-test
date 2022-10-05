@@ -12,7 +12,7 @@ import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
 import { connect } from "react-redux";
 import { getPrice } from "../utils/getPrice";
-import { getAttributes } from "../utils/attributes";
+import { compareAttrs, getAttributes } from "../utils/attributes";
 
 import { addProductToCart } from "../app/actions/cart";
 
@@ -141,35 +141,37 @@ class ProductDetails extends Component {
   }
 
   addToCart(product) {
-    let addedProduct = { ...product, quantity: 1 };
+    const newId =
+      this.state.product.id +
+      this.state.product.selectedAttrs
+        .map((attr) => attr.id + "="  + attr.value)
+        .join(",");
+        console.log(newId);
+    let addedProduct = { ...product, id: newId, quantity: 1 };
     this.props.addProductToCart(addedProduct);
   }
 
-  selectAttribute(selectedAttr) {
+  selectAttribute(attribute) {
     const selectedAttrs = [...this.state.product.selectedAttrs];
 
-   const newSelectedAttributes =  selectedAttrs.map(attr => attr.id === selectedAttr.id ? {...attr, value: selectedAttr.value} : attr)
+    const newSelectedAttributes = selectedAttrs.map((attr) =>
+      attr.id === attribute.id ? { ...attr, value: attribute.value } : attr
+    );
 
-    // const index = newSelectedAttribute.find(
-    //   (attr) => attr.id === selectedAttr.id
-    // );
-    // index.value = selectedAttr.value;
-    
-    // console.log(index);
+    if (compareAttrs(selectedAttrs, newSelectedAttributes)) {
+      return;
+    }
 
-    // if (index) {
-      this.setState({
-        product: {
-          ...this.state.product,
-          selectedAttrs: [...newSelectedAttributes],
-        },
-      });
-    // }
+    this.setState({
+      product: {
+        ...this.state.product,
+        selectedAttrs: [...newSelectedAttributes],
+      },
+    });
   }
 
   render() {
     const product = this.state.product;
-    // console.log(product);
     const { selectedCurrency } = this.props;
     const prices = product?.prices;
     const price = getPrice(selectedCurrency, prices);

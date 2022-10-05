@@ -19,6 +19,7 @@ import {
 
 import caretLeft from "../imgs/CaretLeft.svg";
 import caretRight from "../imgs/CaretRight.svg";
+import { replaceAttrInId } from "../utils/attributes";
 const CartItemContainer = styled("div")(
   {
     margin: "0",
@@ -166,7 +167,6 @@ class CartItem extends Component {
   state = { selectedImgSrc: this.props.gallery[0], selectedImgIndex: 0 };
 
   handleIncrement(id) {
-    console.log(this.props);
     this.props.incrementProduct(id);
   }
 
@@ -174,9 +174,11 @@ class CartItem extends Component {
     this.props.decrementProduct(id);
   }
 
-  selectAttribute(selectedAttr) {
-    console.log("hehehe");
-    this.props.changeAttribute(selectedAttr);
+  selectAttribute(attribute) {
+  
+    
+    this.props.changeAttribute(attribute);
+
   }
 
   handleChangeImg(gallery, order) {
@@ -214,8 +216,12 @@ class CartItem extends Component {
       quantity,
       selectedAttrs,
     } = this.props;
+
+
+
+    // console.log(this.props);
+
     const price = getPrice(selectedCurrency, prices);
-    // console.log(selectedAttrs);
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
         <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
@@ -234,7 +240,7 @@ class CartItem extends Component {
                   <ProductColor
                     onClick={() =>
                       this.selectAttribute({
-                        productId: id,
+                        productId: id ,
                         attrId: attr.id,
                         attrValue: item.value,
                       })
@@ -251,7 +257,7 @@ class CartItem extends Component {
                   <Attribute
                     onClick={() =>
                       this.selectAttribute({
-                        productId: id,
+                        productId:id ,
                         attrId: attr.id,
                         attrValue: item.value,
                       })

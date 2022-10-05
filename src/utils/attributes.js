@@ -16,3 +16,20 @@ const objectsEqual = (o1, o2) =>
 
         return item1.every((o, i) => objectsEqual(o, item2[i]))
 }
+
+
+export const replaceAttrInId = (id, attrId, attrVal) => {
+  
+
+   const matchedAttrVal = id.split(attrId+'=').pop().split(',')[0]
+  
+  // console.log(matchedAttrVal)
+  if(matchedAttrVal) {
+    return id.slice().replace(matchedAttrVal, attrVal) 
+  }
+
+  else {
+    return id
+  }
+}
+
