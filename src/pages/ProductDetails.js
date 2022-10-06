@@ -12,7 +12,7 @@ import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
 import { connect } from "react-redux";
 import { getPrice } from "../utils/getPrice";
-import { compareAttrs, getAttributes } from "../utils/attributes";
+import { compareAttrs, getDefaultAttributes } from "../utils/attributes";
 
 import { addProductToCart } from "../app/actions/cart";
 
@@ -125,7 +125,7 @@ class ProductDetails extends Component {
       const attrs = product?.attributes;
 
       this.setState({
-        product: { ...product, selectedAttrs: getAttributes(attrs) },
+        product: { ...product, selectedAttrs: getDefaultAttributes(attrs) },
         selectedMainImg: product.gallery[0],
       });
     });

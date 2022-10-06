@@ -19,7 +19,6 @@ import {
 
 import caretLeft from "../imgs/CaretLeft.svg";
 import caretRight from "../imgs/CaretRight.svg";
-import { replaceAttrInId } from "../utils/attributes";
 const CartItemContainer = styled("div")(
   {
     margin: "0",
@@ -283,7 +282,7 @@ class CartItem extends Component {
             <button onClick={() => this.handleDecrement(id)}>-</button>
           </CartItemQuantity>
           <ItemImage alt="src" src={this.state.selectedImgSrc} />
-          {this.cartpageDisplay && (
+          {this.cartpageDisplay && gallery.length > 1 && (
             <>
               <LeftArrow
                 onClick={() => this.handleChangeImg(gallery, "previous")}

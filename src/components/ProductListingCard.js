@@ -1,118 +1,145 @@
-import React, { Component } from 'react'
-import styled from '@emotion/styled/macro';
-import cartIcon from '../imgs/circle-cart-icon.svg'
-import { Link } from 'react-router-dom';
-import { getPrice } from '../utils/getPrice';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import styled from "@emotion/styled/macro";
+import cartIcon from "../imgs/circle-cart-icon.svg";
+import { Link } from "react-router-dom";
+import { getPrice } from "../utils/getPrice";
+import { connect } from "react-redux";
+import getProduct from "../graphql/queries/getProductDetails";
+import { addProductToCart } from "../app/actions/cart";
+import { getDefaultAttributes } from "../utils/attributes";
 
-const CardImg = styled('img') ({
-  display:'block',
-  width:'354px',
-  height:'330px',
-  marginBottom:'24px',
-  boxShadow: '0px 1px 10px rgba(168, 172, 176, 0.19)',
-})
+const CardImg = styled("img")({
+  display: "block",
+  width: "354px",
+  height: "330px",
+  marginBottom: "24px",
+  boxShadow: "0px 1px 10px rgba(168, 172, 176, 0.19)",
+});
 
-const CardText = styled('div')({
-  fontSize:'18px',
-  "& > *" : {
-    padding:'5px'
+const CardText = styled("div")({
+  fontSize: "18px",
+  "& > *": {
+    padding: "5px",
   },
-    ":first-of-type": {
-        fontWeight:'300'
+  ":first-of-type": {
+    fontWeight: "300",
+  },
+  ":last-of-type": {
+    fontWeight: "600",
+  },
+});
+
+const AddToCartIcon = styled("img")({
+  width: "52px",
+  heigth: "52px",
+  position: "absolute",
+  bottom: "70px",
+  right: "20px",
+  opacity: "0",
+});
+
+const Card = styled("div")(
+  {
+    width: "386px",
+    height: "444px",
+    padding: "16px",
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
+    cursor: "pointer",
+    a: {
+      textDecoration: "none",
+      color: "inherit",
     },
-    ":last-of-type": {
-      fontWeight:'600'
-    }
-  })
-  
-  
-  
-
-  const AddToCartIcon = styled('img')({
-    width:'52px',
-    heigth:'52px',
-    position:'absolute',
-    bottom:'70px',
-    right:'20px',
-    opacity:'0'
-  })
-  
-  const Card = styled('div')({
-  width:'386px',
-  height:'444px',
-  padding:'16px',
-  display:'flex',
-  flexDirection:'column',
-  position:'relative',
-  cursor:'pointer',
-  a : {
-    textDecoration:'none',
-    color:'inherit'
+    ":hover": {
+      boxShadow: "0px 4px 35px rgba(168, 172, 176, 0.19)",
+      [AddToCartIcon]: {
+        opacity: "1",
+        transition: "0.5s",
+        ":hover": {
+          transform: "scale(1.3)",
+        },
+      },
+    },
   },
-  ":hover" : {
-    boxShadow: '0px 4px 35px rgba(168, 172, 176, 0.19)',
-    [AddToCartIcon]: {
-    opacity:'1',
-    transition:'0.5s',
-    ":hover" : {
-     transform:'scale(1.3)' 
+  ({ inStock }) =>
+    !inStock && {
+      cursor: "not-allowed",
+      ":after": {
+        position: "absolute",
+        content: '""',
+        height: "429px",
+        width: "354px",
+        backgroundColor: "rgba(255,255,255,0.7)",
+      },
     }
-  }  
+);
+
+const OutOfStock = styled("p")({
+  textTransform: "uppercase",
+  color: "#8D8F9A",
+  fontWeight: "400",
+  fontSize: "24px",
+  position: "absolute",
+  top: "35%",
+  left: "25%",
+  zIndex: "99",
+});
+
+class ProductListingCard extends Component {
+  quickShop(event, id) {
+    event.preventDefault();
+
+
+    /**
+     * @param  {}
+     */
+
+    getProduct(id).then(({ product }) => {
+      console.log(product);
+      const defaultAttrs = getDefaultAttributes(product.attributes);
+
+      const newId =
+        product?.id +
+        defaultAttrs.map((attr) => attr.id + "=" + attr.value).join(",");
+      console.log(newId);
+      let addedProduct = { ...product, id: newId, selectedAttrs: defaultAttrs,  quantity: 1 };
+      this.props.addProductToCart(addedProduct);
+    });
   }
-  },
-  ({inStock}) => (!inStock && {
-    cursor:'not-allowed',
-    ":after": {
-      position:'absolute',
-      content:'""',
-      height:'429px',
-      // maxHeight:'100%',
-      width:'354px',
-      backgroundColor:'rgba(255,255,255,0.7)'
-    }
-  })
-  )
-  
-  const OutOfStock = styled('p')({
-    textTransform:'uppercase',
-    color:'#8D8F9A',
-    fontWeight:'400',
-    fontSize:'24px',
-    position:'absolute',
-    top:'35%',
-    left:'25%',
-    zIndex:'99'
-  })
 
- class ProductListingCard extends Component {
-
-   render() {
-     const {selectedCurrency} = this.props
-     const {brand, name, prices, inStock, gallery, id} = this.props
-     const price = getPrice(selectedCurrency, prices)
-      return (
-        <Card inStock={inStock}>
+  render() {
+    const { selectedCurrency } = this.props;
+    const { brand, name, prices, inStock, gallery, id } = this.props;
+    const price = getPrice(selectedCurrency, prices);
+    return (
+      <Card inStock={inStock}>
         <Link to={`/product/${id}`}>
-        <CardImg src={gallery[0]} />
-         {inStock && 
-         <AddToCartIcon alt='add-to-cart-button' src={cartIcon} />
-        }
+          <CardImg src={gallery[0]} />
+          {inStock && (
+            <AddToCartIcon
+              onClick={(e) => this.quickShop(e, id)}
+              alt="add-to-cart-button"
+              src={cartIcon}
+            />
+          )}
           {!inStock && <OutOfStock>Out of stock</OutOfStock>}
-        <CardText>
-            <p>{brand + ' ' + name}</p>
-            <p>{selectedCurrency.symbol + ' ' + price}</p>
-        </CardText>
-      </Link>
+          <CardText>
+            <p>{brand + " " + name}</p>
+            <p>{selectedCurrency.symbol + " " + price}</p>
+          </CardText>
+        </Link>
       </Card>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    selectedCurrency: state.currency.selectedCurrency
-  }
-}
+    selectedCurrency: state.currency.selectedCurrency,
+  };
+};
 
-  export default connect(mapStateToProps)(ProductListingCard)
+export default connect(mapStateToProps, { addProductToCart })(
+  ProductListingCard
+);

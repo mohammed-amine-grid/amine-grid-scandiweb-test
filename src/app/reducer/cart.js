@@ -31,7 +31,7 @@ const cart = (state = initState, action) => {
   
  
   
-// console.log(state.cartProductsList);
+console.log(state.cartProductsList);
   
 
 
@@ -130,13 +130,11 @@ const cart = (state = initState, action) => {
         console.log(itemWithSameAttrsExists.quantity + changedProduct.quantity);
         return {
           ...state, cartProductsList: state.cartProductsList.map(product => product.id === itemWithSameAttrsExists.id ? {...product, quantity:product.quantity + changedProduct.quantity } : product).filter(product => product.id !== payload.productId),
-          // quantity: state.quantity + 
         }
       }
       
       else {
         attrIndex.value = payload.attrValue;
-        // console.log(product.id, payload.attrId, payload.attrValue);
         console.log("change attr",payload, );
         
 

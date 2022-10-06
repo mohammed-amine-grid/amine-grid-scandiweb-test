@@ -32,7 +32,6 @@ class ProductListing extends Component {
 
   }
   render() {
-  console.log(this.state.products); 
     return <PLPContainer>
         {this.state.products.length && this.state.products.map(product => <ProductListingCard key={product.id} {...product} />)}
      

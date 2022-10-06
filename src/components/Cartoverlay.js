@@ -4,6 +4,7 @@ import CartItem from "./CartItem";
 import { connect } from "react-redux";
 import cartlogo from "../imgs/cart.svg";
 import { calculateTotal } from "../utils/getPrice";
+import { Link } from "react-router-dom";
 
 const CartLogo = styled("img")({
   cursor: "pointer",
@@ -128,7 +129,6 @@ class Cartoverlay extends Component {
   }
 
   handleClickOutside(event) {
-    // console.log(this.overlayRef);
     if (
       this.overlayRef.current &&
       !this.overlayRef.current.contains(event.target)
@@ -139,10 +139,8 @@ class Cartoverlay extends Component {
   }
 
   render() {
-    // console.log(this.props);
     const { cartProductsList, quantity } = this.props.state;
     const {selectedCurrency} = this.props.currency;
-    // console.log(this.props);
     return (
       <>
         <CartLogo
@@ -170,7 +168,10 @@ class Cartoverlay extends Component {
               <span>{selectedCurrency.symbol + ' ' + calculateTotal(cartProductsList, selectedCurrency).toFixed(2)}</span>
             </CartoverlayPrice>
             <CartActionsContainer>
+              <Link to='cart'>
+              
               <CartActionsButton>View Bag</CartActionsButton>
+              </Link>
               <CartActionsButton checkout>check out</CartActionsButton>
             </CartActionsContainer>
           </CartoverlayContainer>
