@@ -1,4 +1,4 @@
-import getCurrencies from "../../graphql/getCurrencies"
+import getCurrencies from "../../graphql/queries/getCurrencies"
 export const selectCurrency = (payload) => ({type:'SELECT_CURRENCY', payload:payload})
 export const getCurrencyList = () => (dispatch) => {
   getCurrencies()

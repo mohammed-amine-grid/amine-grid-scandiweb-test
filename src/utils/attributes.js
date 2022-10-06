@@ -21,15 +21,16 @@ export const getDefaultAttributes = (attrs) => {
  */
 
 export const compareAttrs = (item1 = [], item2 = []) => {
-  console.log(item1, item2);
-  const objectsEqual = (o1, o2) =>
-    typeof o1 === "object" && Object.keys(o1).length > 0
-      ? Object.keys(o1).length === Object.keys(o2).length &&
-        Object.keys(o1).every((p) => objectsEqual(o1[p], o2[p]))
-      : o1 === o2;
+  // console.log(item1, item2);
+const objectsEqual = (o1, o2) => 
+    typeof o1 === 'object' && Object.keys(o1).length > 0 
+        ? Object.keys(o1).length === Object.keys(o2).length 
+            && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p]))
+        : o1 === o2;
 
-  return item1.every((o, i) => objectsEqual(o, item2[i]));
-};
+        return item1.every((o, i) => objectsEqual(o, item2[i]))
+}
+ 
 
 /**
  * modify id string to account for newly selected attributes
@@ -38,6 +39,10 @@ export const compareAttrs = (item1 = [], item2 = []) => {
  * @param {String} attrVal attribute value, i.e "41"
  * @returns {String} modified id string || id unmodified
  */
+
+//  FIX!!!!!!!!!!!!!!!!!!
+
+
 export const replaceAttrInId = (id, attrId, attrVal) => {
   const matchedAttrVal = id
     .split(attrId + "=")

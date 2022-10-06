@@ -6,67 +6,44 @@ const initState = {
 };
 
 const cart = (state = initState, action) => {
-  
-  
   const { payload } = action;
 
+  const item = state.cartProductsList.find((product) => {
+    return product.id === payload?.id;
+  });
 
+  const sameAttributes = compareAttrs(
+    item?.selectedAttrs,
+    payload?.selectedAttrs
+  );
 
-  const item = state.cartProductsList.find(
-    (product) =>   {
-      return (product.id === payload?.id);
-    } 
-    );
-  
-
-
-  
-
-    const sameAttributes = compareAttrs(
-      item?.selectedAttrs,
-      payload?.selectedAttrs
-      );
-   
-  
-  
- 
-  
-console.log(state.cartProductsList);
-  
-
+  console.log(state.cartProductsList);
 
   switch (action.type) {
     case "ADD_TO_CART":
       if (item) {
-        
-        console.log("add",state.cartProductsList); 
+        // if item already exists increase its quantity by 1
         return {
           ...state,
           cartProductsList: state.cartProductsList.map((item) =>
-          item?.id === payload.id
-          ? {
+            item?.id === payload.id
+              ? {
                   ...item,
                   quantity: item.quantity + 1,
-                  
                 }
-                : item
-                ),
-                quantity: state.quantity + 1
-              };
-            } else if (item && !sameAttributes ) {
-              
-              
-        return {
-          ...state,
-          cartProductsList: [
-            ...state.cartProductsList,
-            {...payload},
-          ],
+              : item
+          ),
           quantity: state.quantity + 1,
         };
-      
-      } 
-
+      } else if (item && !sameAttributes) {
+        // if item exists but with different attributes, add it as new item.
+        return {
+          ...state,
+          cartProductsList: [...state.cartProductsList, { ...payload }],
+          quantity: state.quantity + 1,
+        };
+      }
+      // add item
       return {
         ...state,
         cartProductsList: [...state.cartProductsList, payload],
@@ -86,7 +63,8 @@ console.log(state.cartProductsList);
       const index = state.cartProductsList.find(
         (item) => item.id === action.payload
       );
-
+      
+      // item quantity === 1, remove item from cart
       if (index.quantity === 1) {
         return {
           ...state,
@@ -97,6 +75,7 @@ console.log(state.cartProductsList);
         };
       }
 
+      // item quanitity > 1, decrease quanitity by
       return {
         ...state,
         cartProductsList: state.cartProductsList.map((item) =>
@@ -108,49 +87,59 @@ console.log(state.cartProductsList);
       };
 
     case "CHANGE_ATTRIBUTES":
-      const changedProduct = state.cartProductsList.find(
-        (product) => {
-          return product.id === action.payload.productId;
-        }
-      );
-        console.log(state.cartProductsList);
+      const changedProduct = state.cartProductsList.find((product) => {
+        return product.id === action.payload.productId;
+      });
+      console.log(state.cartProductsList);
 
       const newSelectedAttributes = [...changedProduct.selectedAttrs];
       const attrIndex = newSelectedAttributes.find(
         (attr) => attr.id === payload.attrId
       );
-      const itemWithSameAttrsExists = state.cartProductsList.find(item => item.id === replaceAttrInId(changedProduct.id, payload.attrId, payload.attrValue))
+      const itemWithSameAttrsExists = state.cartProductsList.find(
+        (item) =>
+          item.id ===
+          replaceAttrInId(changedProduct.id, payload.attrId, payload.attrValue)
+      );
 
       if (attrIndex.value === payload.attrValue) {
         return state;
-      } 
-      
-      
-      else if(itemWithSameAttrsExists) {
+      } else if (itemWithSameAttrsExists) {
         console.log(itemWithSameAttrsExists.quantity + changedProduct.quantity);
         return {
-          ...state, cartProductsList: state.cartProductsList.map(product => product.id === itemWithSameAttrsExists.id ? {...product, quantity:product.quantity + changedProduct.quantity } : product).filter(product => product.id !== payload.productId),
-        }
-      }
-      
-      else {
+          ...state,
+          cartProductsList: state.cartProductsList
+            .map((product) =>
+              product.id === itemWithSameAttrsExists.id
+                ? {
+                    ...product,
+                    quantity: product.quantity + changedProduct.quantity,
+                  }
+                : product
+            )
+            .filter((product) => product.id !== payload.productId),
+        };
+      } else {
         attrIndex.value = payload.attrValue;
-        console.log("change attr",payload, );
-        
-
-
+        console.log("change attr", payload);
 
         return {
           ...state,
           cartProductsList: state.cartProductsList.map((product) =>
-          product.id === payload.productId
-          ? { ...product,  id: replaceAttrInId(product.id, payload.attrId, payload.attrValue) , selectedAttrs: [...newSelectedAttributes] }
-          : product
+            product.id === payload.productId
+              ? {
+                  ...product,
+                  id: replaceAttrInId(
+                    product.id,
+                    payload.attrId,
+                    payload.attrValue
+                  ),
+                  selectedAttrs: [...newSelectedAttributes],
+                }
+              : product
           ),
-          
         };
       }
-
 
     default:
       return state;
@@ -158,4 +147,3 @@ console.log(state.cartProductsList);
 };
 
 export default cart;
-
