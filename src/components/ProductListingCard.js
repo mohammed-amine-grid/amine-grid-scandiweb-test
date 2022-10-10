@@ -9,7 +9,7 @@ import { addProductToCart } from "../app/actions/cart";
 import { getDefaultAttributes } from "../utils/attributes";
 import { formatNewId } from "../utils/formatNewId";
 
-//Styling, Component at  ≈ 92
+//Styling, Component at  ≈ 95
 
 const CardImg = styled("img")({
   display: "block",
@@ -67,13 +67,16 @@ const Card = styled("div")(
   },
   ({ inStock }) =>
     !inStock && {
-      cursor: "not-allowed",
-      ":after": {
-        position: "absolute",
-        content: '""',
-        height: "429px",
-        width: "354px",
-        backgroundColor: "rgba(255,255,255,0.7)",
+      boxShadow: "rgba(255,255,255,0.7) 0 0 0 429px inset",
+      [CardImg]: {
+        zIndex: "-1",
+        position: "relative",
+      },
+      [CardText]: {
+        opacity: "0.22",
+      },
+      ":hover": {
+        boxShadow: "rgba(255,255,255,0.7) 0 0 0 429px inset",
       },
     }
 );
@@ -90,7 +93,6 @@ const OutOfStock = styled("p")({
 });
 
 class ProductListingCard extends Component {
-
   quickShop(event, id) {
     event.preventDefault();
     // get product details

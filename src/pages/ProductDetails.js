@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
+import parse from "html-react-parser";
+
 import {
   ProductBrand,
   ProductName,
@@ -18,7 +20,7 @@ import { addProductToCart } from "../app/actions/cart";
 import { formatNewId } from "../utils/formatNewId";
 import PDPImgCarousel from "../components/PDPImgCarousel";
 
-// Styling, Component at  ≈92
+// Styling, Component at  ≈100
 
 const PDPContainer = styled("div")({
   display: "flex",
@@ -68,23 +70,28 @@ const ProductAttributesContainer = styled("div")({
   },
 });
 
-const AddToCartButton = styled("button")({
-  marginTop: "20px",
-  color: "#fff",
-  border: "none",
-  width: "287px",
-  height: "52px",
-  fontWeight: "600",
-  fontSize: "16px",
-  background: "#5ECE7B",
-  textTransform: "uppercase",
-  cursor: "pointer",
-});
+const AddToCartButton = styled("button")(
+  {
+    marginTop: "20px",
+    color: "#fff",
+    border: "none",
+    width: "287px",
+    height: "52px",
+    fontWeight: "600",
+    fontSize: "16px",
+    background: "#5ECE7B",
+    textTransform: "uppercase",
+    cursor: "pointer",
+  },
+  ({ inStock }) => ({
+    opacity: `${!inStock ? 1 : 0.5}`
+  })
+);
 
-const ProductDescription = styled("p")({
+const ProductDescription = styled("div")({
   fontFamily: "Raleway",
   fontSize: "18px",
-  width: "293px",
+  // width: "393px",
   lineHeight: "160%",
   marginTop: "40px",
 });
@@ -98,13 +105,15 @@ class ProductDetails extends Component {
   }
 
   fetchProductDetails() {
-    getProduct(this.props.params["*"]).then(({ product }) => {
-      const attrs = product?.attributes;
+    getProduct(this.props.params["*"])
+      .then(({ product }) => {
+        const attrs = product?.attributes;
 
-      this.setState({
-        product: { ...product, selectedAttrs: getDefaultAttributes(attrs) },
-      });
-    }).catch(error => console.log(error));
+        this.setState({
+          product: { ...product, selectedAttrs: getDefaultAttributes(attrs) },
+        });
+      })
+      .catch((error) => console.log(error));
   }
 
   addToCart(product) {
@@ -199,13 +208,19 @@ class ProductDetails extends Component {
                 {selectedCurrency?.symbol + " " + price}
               </ProductPrice>
             </div>
-
-            <AddToCartButton onClick={() => this.addToCart(product)}>
+            {!product.inStock && (
+              <p style={{ color: "red" }}>item out of stock!</p>
+            )}
+            <AddToCartButton
+            disabled={!product.inStock}
+              inStock={!product.inStock}
+              onClick={() => this.addToCart(product)}
+            >
               Add to cart
             </AddToCartButton>
             <ProductDescription>
               {/* convert description into text  */}
-              {product.description.replace(/(<([^>]+)>)/gi, "")}
+              {parse(product.description)}
             </ProductDescription>
           </ProductAttributesContainer>
         </PDPContainer>
