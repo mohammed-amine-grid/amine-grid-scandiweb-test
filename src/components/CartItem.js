@@ -9,29 +9,26 @@ import {
   ProductPrice,
   AttrTitle,
 } from "./ProductAttributes";
-import { getPrice } from "../utils/getPrice";
+import { getPrice } from "../utils/price";
 import { connect } from "react-redux";
 import {
   incrementProduct,
   decrementProduct,
   changeAttribute,
 } from "../app/actions/cart";
-
 import caretLeft from "../imgs/CaretLeft.svg";
 import caretRight from "../imgs/CaretRight.svg";
+
+// styling, Component at ≈ 168
 const CartItemContainer = styled("div")(
   {
     margin: "0",
     display: "flex",
     marginBottom: "40px",
-    // maxHeight:'200px',
-    h5: {
-      fontWeight: "300",
-    },
   },
   ({ cartpageDisplay }) =>
     cartpageDisplay && {
-      maxHeight: "336px",
+      minHeight: "336px",
       borderWidth: "1px 0",
       borderStyle: "solid",
       borderColor: "#E5E5E5",
@@ -70,10 +67,17 @@ const CartItemAttributesContainer = styled("div")(
         fontWeight: "700",
         marginTop: "20px",
       },
+      [AttrTitle]: {
+        fontWeight: "700",
+        fontSize: "18px",
+      },
+      [AttrTitle]: {
+        margin: "20px auto",
+      },
       [Attribute]: {
         height: "45px",
         width: "63px",
-        lineHeight: "44px",
+        lineHeight: "40px",
         fontSize: "16px",
         letterSpacing: "0.05em",
       },
@@ -173,11 +177,18 @@ class CartItem extends Component {
     this.props.decrementProduct(id);
   }
 
-  selectAttribute(attribute) {
-  
-    
-    this.props.changeAttribute(attribute);
+  selectAttribute(productId, attrId, attrValue) {
+    const newAttribute = { productId, attrId, attrValue };
+    this.props.changeAttribute(newAttribute);
+  }
 
+  // ([], str, str) => Boolean
+  // check if an attr is selected to use boolean value as props for styling
+  attributeSelected(selectedAttrs, attrId, attrValue) {
+    return selectedAttrs.some(
+      (selectedAttr) =>
+        selectedAttr.id === attrId && selectedAttr.value === attrValue
+    );
   }
 
   handleChangeImg(gallery, order) {
@@ -216,10 +227,6 @@ class CartItem extends Component {
       selectedAttrs,
     } = this.props;
 
-
-
-    // console.log(this.props);
-
     const price = getPrice(selectedCurrency, prices);
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
@@ -231,23 +238,20 @@ class CartItem extends Component {
               {selectedCurrency?.symbol + " " + price}
             </ProductPrice>
           </div>
+           {/* iterate through product.attributes [] and render <AttrTitle> (id, i.e: "Size") && <Attribute> (value, i.e: "42") || <ProductColor> (if value is hex) */}
           {attributes.map((attr) => (
             <div key={attr.id}>
-              <AttrTitle>{attr.id}</AttrTitle>
+              <AttrTitle>{attr.id}:</AttrTitle>
               {attr.items.map((item) =>
                 item.value[0] === "#" ? (
                   <ProductColor
                     onClick={() =>
-                      this.selectAttribute({
-                        productId: id ,
-                        attrId: attr.id,
-                        attrValue: item.value,
-                      })
+                      this.selectAttribute(id, attr.id, item.value)
                     }
-                    selected={selectedAttrs.some(
-                      (selectedAttr) =>
-                        selectedAttr.id === attr.id &&
-                        selectedAttr.value === item.value
+                    selected={this.attributeSelected(
+                      selectedAttrs,
+                      attr.id,
+                      item.value
                     )}
                     key={item.id}
                     color={item.value}
@@ -255,16 +259,13 @@ class CartItem extends Component {
                 ) : (
                   <Attribute
                     onClick={() =>
-                      this.selectAttribute({
-                        productId:id ,
-                        attrId: attr.id,
-                        attrValue: item.value,
-                      })
+                      this.selectAttribute(id, attr.id, item.value)
                     }
                     isColor={item.value[0] === "#"}
-                    selected={selectedAttrs.some(
-                      (option) =>
-                        option.id === attr.id && option.value === item.value
+                    selected={this.attributeSelected(
+                      selectedAttrs,
+                      attr.id,
+                      item.value
                     )}
                     key={item.id}
                   >

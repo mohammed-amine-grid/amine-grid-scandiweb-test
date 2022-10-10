@@ -11,10 +11,14 @@ import {
 import getProduct from "../graphql/queries/getProductDetails";
 import { withRouter } from "../routes/withRouter";
 import { connect } from "react-redux";
-import { getPrice } from "../utils/getPrice";
+import { getPrice } from "../utils/price";
 import { compareAttrs, getDefaultAttributes } from "../utils/attributes";
 
 import { addProductToCart } from "../app/actions/cart";
+import { formatNewId } from "../utils/formatNewId";
+import PDPImgCarousel from "../components/PDPImgCarousel";
+
+// Styling, Component at  ≈92
 
 const PDPContainer = styled("div")({
   display: "flex",
@@ -24,41 +28,8 @@ const PDPContainer = styled("div")({
   "@media(max-height:930px)": {
     padding: "20px 97px",
   },
-});
-
-const ProductCarouselContainer = styled("div")({
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-});
-
-const ProductCarouselSideImgsContainer = styled("div")({
-  marginRight: "30px",
-  display: "flex",
-  flexDirection: "column",
-});
-
-const ProductSideImg = styled("img")(
-  {
-    display: "block",
-    height: "80px",
-    width: "79px",
-    marginBottom: "10px",
-    cursor: "pointer",
-  },
-  ({ selected }) =>
-    selected && {
-      outline: "2px solid #5ECE7B",
-      outlineOffset: "2px",
-    }
-);
-
-const ProductCarouselMainImg = styled("div")({
-  width: "611px",
-  // flex:'',
-  img: {
-    width: "100%",
-    maxHeight: "510px",
+  "@media(max-width:1199px)": {
+    flexWrap: "wrap",
   },
 });
 
@@ -74,13 +45,16 @@ const ProductAttributesContainer = styled("div")({
   [ProductName]: {
     fontSize: "30px",
     fontWeight: "400",
-    marginBottom: "40px",
+    marginBottom: "38px",
+  },
+  [AttrTitle]: {
+    fontFamily: "Roboto Condensed",
   },
   [Attribute]: {
     width: "63px",
     height: "45px",
     fontSize: "16px",
-    lineHeight: "2.7",
+    lineHeight: "39px",
     marginBottom: "24px",
   },
   [ProductColor]: {
@@ -117,36 +91,24 @@ const ProductDescription = styled("p")({
 
 class ProductDetails extends Component {
   state = {
-    selectedMainImg: "",
     product: null,
   };
   componentDidMount() {
+    this.fetchProductDetails();
+  }
+
+  fetchProductDetails() {
     getProduct(this.props.params["*"]).then(({ product }) => {
       const attrs = product?.attributes;
 
       this.setState({
         product: { ...product, selectedAttrs: getDefaultAttributes(attrs) },
-        selectedMainImg: product.gallery[0],
       });
-    });
-  }
-
-  selectImg(img) {
-    this.setState((prevState, _) => {
-      if (prevState.selectedMainImg === img) return;
-      else {
-        return { selectedMainImg: img };
-      }
-    });
+    }).catch(error => console.log(error));
   }
 
   addToCart(product) {
-    const newId =
-      this.state.product.id +
-      this.state.product.selectedAttrs
-        .map((attr) => attr.id + "="  + attr.value)
-        .join(",");
-        console.log(newId);
+    const newId = formatNewId(product);
     let addedProduct = { ...product, id: newId, quantity: 1 };
     this.props.addProductToCart(addedProduct);
   }
@@ -170,6 +132,15 @@ class ProductDetails extends Component {
     });
   }
 
+  // ([], str, str) => Boolean
+  // check if an attr is selected to use boolean value as props for styling
+  attributeSelected(selectedAttrs, attrId, attrValue) {
+    return selectedAttrs.some(
+      (selectedAttr) =>
+        selectedAttr.id === attrId && selectedAttr.value === attrValue
+    );
+  }
+
   render() {
     const product = this.state.product;
     const { selectedCurrency } = this.props;
@@ -179,38 +150,23 @@ class ProductDetails extends Component {
     return (
       product && (
         <PDPContainer>
-          <ProductCarouselContainer>
-            <ProductCarouselSideImgsContainer>
-              {product.gallery.map((img, i) => (
-                <ProductSideImg
-                  key={i}
-                  selected={this.state.selectedMainImg === img}
-                  onClick={() => this.selectImg(img)}
-                  alt="product-img"
-                  src={img}
-                />
-              ))}
-            </ProductCarouselSideImgsContainer>
-            <ProductCarouselMainImg>
-              <img alt="main-product-img" src={this.state.selectedMainImg} />
-            </ProductCarouselMainImg>
-          </ProductCarouselContainer>
+          <PDPImgCarousel gallery={product.gallery} />
           <ProductAttributesContainer>
             <div>
               <ProductBrand>{product.brand}</ProductBrand>
               <ProductName>{product.name}</ProductName>
             </div>
-
+            {/* iterate through product.attributes [] and render <AttrTitle> (id, i.e: "Size") && <Attribute> (value, i.e: "42") || <ProductColor> (if value is hex) */}
             {product.attributes.map((attr) => (
               <div key={attr.id}>
                 <AttrTitle>{attr.id}</AttrTitle>
                 {attr.items.map((item) =>
                   item.value[0] === "#" ? (
                     <ProductColor
-                      selected={product.selectedAttrs.some(
-                        (selectedAttr) =>
-                          selectedAttr.id === attr.id &&
-                          selectedAttr.value === item.value
+                      selected={this.attributeSelected(
+                        product.selectedAttrs,
+                        attr.id,
+                        item.value
                       )}
                       onClick={() =>
                         this.selectAttribute({ id: attr.id, value: item.value })
@@ -223,10 +179,10 @@ class ProductDetails extends Component {
                       onClick={() =>
                         this.selectAttribute({ id: attr.id, value: item.value })
                       }
-                      selected={product.selectedAttrs.some(
-                        (selectedAttr) =>
-                          selectedAttr.id === attr.id &&
-                          selectedAttr.value === item.value
+                      selected={this.attributeSelected(
+                        product.selectedAttrs,
+                        attr.id,
+                        item.value
                       )}
                       key={item.id}
                     >
@@ -248,6 +204,7 @@ class ProductDetails extends Component {
               Add to cart
             </AddToCartButton>
             <ProductDescription>
+              {/* convert description into text  */}
               {product.description.replace(/(<([^>]+)>)/gi, "")}
             </ProductDescription>
           </ProductAttributesContainer>

@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import styled from "@emotion/styled/macro";
 import cartIcon from "../imgs/circle-cart-icon.svg";
 import { Link } from "react-router-dom";
-import { getPrice } from "../utils/getPrice";
+import { getPrice } from "../utils/price";
 import { connect } from "react-redux";
 import getProduct from "../graphql/queries/getProductDetails";
 import { addProductToCart } from "../app/actions/cart";
 import { getDefaultAttributes } from "../utils/attributes";
+import { formatNewId } from "../utils/formatNewId";
+
+//Styling, Component at  ≈ 92
 
 const CardImg = styled("img")({
   display: "block",
@@ -87,25 +90,25 @@ const OutOfStock = styled("p")({
 });
 
 class ProductListingCard extends Component {
+
   quickShop(event, id) {
     event.preventDefault();
+    // get product details
+    getProduct(id)
+      .then(({ product }) => {
+        const defaultAttrs = getDefaultAttributes(product.attributes);
+        const newId = formatNewId(product, defaultAttrs);
 
+        let addedProduct = {
+          ...product,
+          id: newId,
+          selectedAttrs: defaultAttrs,
+          quantity: 1,
+        };
 
-    /**
-     * @param  {}
-     */
-
-    getProduct(id).then(({ product }) => {
-      console.log(product);
-      const defaultAttrs = getDefaultAttributes(product.attributes);
-
-      const newId =
-        product?.id +
-        defaultAttrs.map((attr) => attr.id + "=" + attr.value).join(",");
-      console.log(newId);
-      let addedProduct = { ...product, id: newId, selectedAttrs: defaultAttrs,  quantity: 1 };
-      this.props.addProductToCart(addedProduct);
-    });
+        this.props.addProductToCart(addedProduct);
+      })
+      .catch((error) => console.log(error));
   }
 
   render() {

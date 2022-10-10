@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import ProductListing from '../pages/ProductListing';
 import ProductDetails from '../pages/ProductDetails';
 const PagesContainer = styled('div')({
-  marginTop:'80px',
+  marginTop:'30px',
 })
 
 export default class MainRoutes extends Component {

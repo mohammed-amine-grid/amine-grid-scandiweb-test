@@ -1,4 +1,4 @@
-import { compareAttrs, replaceAttrInId } from "../../utils/attributes";
+import { compareAttrs, changeAttrInId } from "../../utils/attributes";
 
 const initState = {
   cartProductsList: [],
@@ -7,17 +7,16 @@ const initState = {
 
 const cart = (state = initState, action) => {
   const { payload } = action;
-
+  // find same product, look up by id
   const item = state.cartProductsList.find((product) => {
     return product.id === payload?.id;
   });
 
+  // find if same product has same attributes/ options
   const sameAttributes = compareAttrs(
     item?.selectedAttrs,
     payload?.selectedAttrs
   );
-
-  console.log(state.cartProductsList);
 
   switch (action.type) {
     case "ADD_TO_CART":
@@ -63,7 +62,7 @@ const cart = (state = initState, action) => {
       const index = state.cartProductsList.find(
         (item) => item.id === action.payload
       );
-      
+
       // item quantity === 1, remove item from cart
       if (index.quantity === 1) {
         return {
@@ -75,7 +74,7 @@ const cart = (state = initState, action) => {
         };
       }
 
-      // item quanitity > 1, decrease quanitity by
+      // item quanitity > 1, decrease quanitity by 1.
       return {
         ...state,
         cartProductsList: state.cartProductsList.map((item) =>
@@ -87,28 +86,37 @@ const cart = (state = initState, action) => {
       };
 
     case "CHANGE_ATTRIBUTES":
+      // find product object whose attributes will change
       const changedProduct = state.cartProductsList.find((product) => {
         return product.id === action.payload.productId;
       });
-      console.log(state.cartProductsList);
 
+      // make a copy of its selectedAttrs property
       const newSelectedAttributes = [...changedProduct.selectedAttrs];
+
+      // find the attribute to be changed 
       const attrIndex = newSelectedAttributes.find(
         (attr) => attr.id === payload.attrId
       );
+      
+      // find if changedProduct becomes a duplicate after attributes change
+      // compare ids; each product added to cart has a unique id that describes its name and its selected attributes/options
       const itemWithSameAttrsExists = state.cartProductsList.find(
         (item) =>
           item.id ===
-          replaceAttrInId(changedProduct.id, payload.attrId, payload.attrValue)
+          changeAttrInId(changedProduct.id, payload.attrId, payload.attrValue)
       );
-
+      
+      // if no new attrs are selected do nothing
       if (attrIndex.value === payload.attrValue) {
         return state;
-      } else if (itemWithSameAttrsExists) {
-        console.log(itemWithSameAttrsExists.quantity + changedProduct.quantity);
+      } 
+      // if changedProduct is duplicate, remove it from cart and add its quantity to the product already in list.
+      else if (itemWithSameAttrsExists) {
         return {
           ...state,
           cartProductsList: state.cartProductsList
+            .filter((product) => product.id !== changedProduct.id)
             .map((product) =>
               product.id === itemWithSameAttrsExists.id
                 ? {
@@ -116,20 +124,19 @@ const cart = (state = initState, action) => {
                     quantity: product.quantity + changedProduct.quantity,
                   }
                 : product
-            )
-            .filter((product) => product.id !== payload.productId),
+            ),
         };
-      } else {
+      } 
+      // otherwise simply change the attribute of the product
+      else {
         attrIndex.value = payload.attrValue;
-        console.log("change attr", payload);
-
         return {
           ...state,
           cartProductsList: state.cartProductsList.map((product) =>
             product.id === payload.productId
               ? {
                   ...product,
-                  id: replaceAttrInId(
+                  id: changeAttrInId(
                     product.id,
                     payload.attrId,
                     payload.attrValue

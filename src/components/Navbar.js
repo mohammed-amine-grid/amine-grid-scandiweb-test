@@ -5,22 +5,23 @@ import navlogo from "../imgs/a-logo.svg";
 import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
 import getProductCategories from "../graphql/queries/getProductCategories";
 import Cartoverlay from "./Cartoverlay";
-const NavbarContainer = styled("nav")(({ theme }) => ({
-  width: "100vw",
-  position: "fixed",
+
+//Styling, Component at  ≈ 104
+
+const NavbarContainer = styled("nav")({
+  width: "100%",
+  position: "sticky",
   zIndex: "999",
   top: "0",
   backgroundColor: "white",
-  fontFamily: `${theme.fonts.primary}`,
   paddingInline: "17px",
-  fontWeight: `${theme.fontWeights.regular}`,
+  fontWeight: "400",
   textTransform: "uppercase",
   justifyContent: "center",
   alignItems: "center",
-  // backgroundColor:'red',
   fontSize: "16px",
   height: "80px",
-  color: `${theme.colors.primary}`,
+  color: "#1D1F22",
   display: "flex",
 
   ".nav-logo": {
@@ -36,7 +37,7 @@ const NavbarContainer = styled("nav")(({ theme }) => ({
   "@media (min-width:1399px)": {
     paddingInline: "117px",
   },
-}));
+});
 
 const CategoriesContainer = styled("ul")({
   display: "flex",
@@ -55,7 +56,7 @@ const CategoriesContainer = styled("ul")({
   "@media (min-width:1399px)": {
     a: {
       paddingInline: "30px",
-      paddingBottom: "32px",
+      paddingBottom: "26px",
     },
   },
 });
@@ -86,7 +87,7 @@ const CategoryLink = styled("li")({
   "@media (min-width:1399px)": {
     a: {
       paddingInline: "30px",
-      paddingBottom: "32px",
+      paddingBottom: "28px",
     },
   },
 });
@@ -97,50 +98,20 @@ const NavActions = styled("ul")({
   position: "relative",
   paddingRight: "30px",
   justifyContent: "flex-end",
-  // ".cart-logo": {
-  //   cursor: "pointer",
-  // },
   flex: "2",
 });
 
-// const CartIconItmesNumber = styled("div")({
-//   color: "white",
-//   backgroundColor: "black",
-//   textAlign: "center",
-//   width: "1.2rem",
-//   height: "1.2rem",
-//   position: "absolute",
-//   borderRadius: "50%",
-//   bottom: 9,
-//   right: 18,
-//   fontSize: "14px",
-//   fontWeight: "600",
-// });
-
-// const GreyOverlay = styled("div")({
-//   height: "100%",
-//   width: "100%",
-//   position: "absolute",
-//   top: 0,
-//   left: 0,
-//   zIndex: 999,
-//   backgroundColor: "#393748",
-//   opacity: "22%",
-// });
-
 export default class Navbar extends Component {
   constructor(props) {
-   super(props) 
-    // this.wrapperRef = React.createRef();
-    // this.handleClickOutside = this.handleClickOutside.bind(this); 
-   this.state = {
+    super(props);
+
+    this.state = {
       categories: [],
       cartOverlayOpen: false,
     };
   }
 
   componentDidMount() {
-    // document.addEventListener("mousedown", this.handleClickOutside);
     getProductCategories().then((res) =>
       this.setState({
         categories: res,
@@ -148,42 +119,25 @@ export default class Navbar extends Component {
     );
   }
 
-
-  // handleClickOutside(event) {
-  //   if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
-  //     this.setState({ cartOverlayOpen: false });
-  //   }
-  // }
   render() {
     return (
-        <NavbarContainer>
-          <CategoriesContainer>
-            {this.state.categories &&
-              this.state.categories.map((category) => (
-                <CategoryLink key={category.name}>
-                  <Link to={`/category/${category.name}`}>{category.name}</Link>
-                </CategoryLink>
-              ))}
-          </CategoriesContainer>
-          <img className="nav-log" src={navlogo} alt="nav-logo" />
-          <NavActions className="actions">
-            <CurrencyDropdownmenu />
-            {/* <img
-              onClick={() =>
-                this.setState({ cartOverlayOpen: !this.state.cartOverlayOpen })
-              }
-              className="cart-logo"
-              src={cartlogo}
-              alt="cart-logo"
-            /> */}
-            <Cartoverlay />
-            {/* <CartIconItmesNumber>3</CartIconItmesNumber> */}
-          </NavActions>
-          {/* {this.state.cartOverlayOpen && <Cartoverlay ref={this.wrapperRef} />} */}
-        </NavbarContainer>
+      <NavbarContainer>
+        <CategoriesContainer>
+          {this.state.categories &&
+            this.state.categories.map((category) => (
+              <CategoryLink key={category.name}>
+                <Link to={`/category/${category.name}`}>{category.name}</Link>
+              </CategoryLink>
+            ))}
+        </CategoriesContainer>
+        <img className="nav-log" src={navlogo} alt="nav-logo" />
+        <NavActions className="actions">
+          <CurrencyDropdownmenu />
+
+          <Cartoverlay />
+        </NavActions>
+      </NavbarContainer>
     );
   }
 }
 
-// decouple cart overlay from navbar
-// fix img res

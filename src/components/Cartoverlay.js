@@ -3,8 +3,10 @@ import styled from "@emotion/styled";
 import CartItem from "./CartItem";
 import { connect } from "react-redux";
 import cartlogo from "../imgs/cart.svg";
-import { calculateTotal } from "../utils/getPrice";
+import { calculateTotal } from "../utils/price";
 import { Link } from "react-router-dom";
+
+// Styling, Component at  ≈137
 
 const CartLogo = styled("img")({
   cursor: "pointer",
@@ -38,7 +40,6 @@ const GreyOverlay = styled("div")({
 });
 
 const CartoverlayContainer = styled("div")({
-  // top:'200px',
   position: "fixed",
   top: 80,
   right: 72,
@@ -47,7 +48,6 @@ const CartoverlayContainer = styled("div")({
   maxWidth: "325px",
   backgroundColor: "#fff",
   padding: "32px 16px",
-  // border: "1px solid black",
   scrollbarWidth: "thin",
   scrollbarColor: "#5ECE7B white",
   "::-webkit-scrollbar": {
@@ -57,16 +57,24 @@ const CartoverlayContainer = styled("div")({
   "::-webkit-scrollbar-thumb": {
     background: "#5ECE7B",
   },
+  a: {
+    textDecoration: "none",
+  },
   overflowY: "scroll",
+  // boxShadow:'0 0 0 100vmax rgba(0,0,0, 0.22)'
 });
 
 const CartoverlayHeader = styled("h3")({
   fontSize: "16px",
+  marginBottom: "36px",
+});
+
+const CartoverlayHeaderLabel = styled("span")({
   fontWeight: "700",
-  marginBottom: "32px",
-  span: {
-    fontWeight: "500",
-  },
+});
+
+const CartoverlayHeaderQuantity = styled("span")({
+  fontWeight: "500",
 });
 
 const CartoverlayPrice = styled("div")({
@@ -103,14 +111,26 @@ const CartActionsButton = styled("button")(
     lineHeight: "100%",
     fontSize: "14px",
     fontWeight: "600",
+    transition: "0.2s ease-in",
     cursor: "pointer",
+    "&: hover": {
+      color: "white",
+      background: "black",
+    },
   },
+
   ({ checkout }) =>
     checkout && {
       border: "none",
       background: "#5ECE7B",
       color: "#fff",
       padding: "16px 28px",
+      transition: "0.2s ease-in",
+      "&: hover": {
+        color: "#5ECE7B",
+        background: "#fff",
+        outline: "2px solid #5ECE7B",
+      },
     }
 );
 
@@ -140,7 +160,7 @@ class Cartoverlay extends Component {
 
   render() {
     const { cartProductsList, quantity } = this.props.state;
-    const {selectedCurrency} = this.props.currency;
+    const { selectedCurrency } = this.props.currency;
     return (
       <>
         <CartLogo
@@ -150,27 +170,35 @@ class Cartoverlay extends Component {
           src={cartlogo}
           alt="cart-logo"
         />
+
         {this.state.overlayOpen && <GreyOverlay />}
 
         {quantity !== 0 ? (
           <CartIconItmesNumber>{quantity}</CartIconItmesNumber>
-        ) : undefined}
+        ) : null}
+
         {this.state.overlayOpen && (
           <CartoverlayContainer ref={this.overlayRef}>
             <CartoverlayHeader>
-              My Bag, <span>{quantity}</span>
+              <CartoverlayHeaderLabel>My Bag</CartoverlayHeaderLabel>,{" "}
+              <CartoverlayHeaderQuantity>
+                {quantity} items
+              </CartoverlayHeaderQuantity>
             </CartoverlayHeader>
             {cartProductsList.map((item) => (
               <CartItem key={item.id} {...item} />
             ))}
             <CartoverlayPrice>
               <span>Total</span>
-              <span>{selectedCurrency.symbol + ' ' + calculateTotal(cartProductsList, selectedCurrency).toFixed(2)}</span>
+              <span>
+                {selectedCurrency.symbol +
+                  " " +
+                  calculateTotal(cartProductsList, selectedCurrency).toFixed(2)}
+              </span>
             </CartoverlayPrice>
             <CartActionsContainer>
-              <Link to='cart'>
-              
-              <CartActionsButton>View Bag</CartActionsButton>
+              <Link onClick={() => this.setState({overlayOpen: false})} to="cart">
+                <CartActionsButton>View Bag</CartActionsButton>
               </Link>
               <CartActionsButton checkout>check out</CartActionsButton>
             </CartActionsContainer>
@@ -184,7 +212,7 @@ class Cartoverlay extends Component {
 const mapStateToProps = (state) => {
   return {
     state: state.cart,
-    currency: state.currency
+    currency: state.currency,
   };
 };
 

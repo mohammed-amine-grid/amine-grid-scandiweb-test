@@ -5,14 +5,14 @@ import arrowdown from "../imgs/arrow-down.svg";
 import { connect } from "react-redux";
 import { getCurrencyList, selectCurrency } from "../app/actions/currency";
 
+//Styling, Component at  ≈ 52
+
 const DropdownContainer = styled("div")({
   marginRight: "25px",
 });
 
-
-
 const DropdownList = styled("ul")({
-  backgroundColor:'white',
+  backgroundColor: "white",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -20,7 +20,7 @@ const DropdownList = styled("ul")({
   width: "114px",
   minHeight: "170px",
   marginTop: "10px",
-  right: "-24px",
+  right: "20px",
   boxShadow: "0px 0px 7px 0px rgba(0,0,0,0.1)",
   fontSize: "1.3rem",
   fontWeight: "500",
@@ -30,7 +30,7 @@ const DropdownList = styled("ul")({
     width: "100%",
     padding: "10px",
     paddingLeft: "20px",
-    cursor:'pointer',
+    cursor: "pointer",
     ":hover": {
       backgroundColor: "#EEEEEE",
     },
@@ -66,10 +66,13 @@ class CurrencyDropdownmenu extends Component {
   }
 
   handleClickOutside(event) {
-    if (this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
+    if (
+      this.wrapperRef.current &&
+      !this.wrapperRef.current.contains(event.target)
+    ) {
       this.setState({ open: false });
     }
-    return
+    return;
   }
 
   toggleDropdown() {
@@ -78,7 +81,7 @@ class CurrencyDropdownmenu extends Component {
 
   handleCurrencySelection(curr) {
     this.props.selectCurrency(curr);
-    this.setState({open:false})
+    this.setState({ open: false });
   }
 
   render() {
