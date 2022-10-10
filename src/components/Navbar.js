@@ -6,7 +6,7 @@ import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
 import getProductCategories from "../graphql/queries/getProductCategories";
 import Cartoverlay from "./Cartoverlay";
 
-//Styling, Component at  ≈ 104
+//Styling, Component at  ≈ 108
 
 const NavbarContainer = styled("nav")({
   width: "100%",
@@ -91,9 +91,6 @@ const CategoryLink = styled("li")({
       paddingBottom: "28px",
     },
   },
-}, ({isActive}) => isActive && {
-  color: "#5ECE7B",
-      borderBottom: "2px solid #5ECE7B",
 });
 
 const NavActions = styled("ul")({
