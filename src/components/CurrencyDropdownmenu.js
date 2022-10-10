@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
-import arrowup from "../imgs/arrow-up.svg";
-import arrowdown from "../imgs/arrow-down.svg";
+import arrowup from "../svg/arrow-up.svg";
+import arrowdown from "../svg/arrow-down.svg";
 import { connect } from "react-redux";
 import { getCurrencyList, selectCurrency } from "../app/actions/currency";
 

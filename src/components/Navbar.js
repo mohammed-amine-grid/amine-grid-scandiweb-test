@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import navlogo from "../imgs/a-logo.svg";
+import navlogo from "../svg/a-logo.svg";
 import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
 import getProductCategories from "../graphql/queries/getProductCategories";
 import Cartoverlay from "./Cartoverlay";

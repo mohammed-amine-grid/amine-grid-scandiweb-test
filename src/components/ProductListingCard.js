@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled/macro";
-import cartIcon from "../imgs/circle-cart-icon.svg";
+import cartIcon from "../svg/circle-cart-icon.svg";
 import { Link } from "react-router-dom";
 import { getPrice } from "../utils/price";
 import { connect } from "react-redux";
@@ -24,11 +24,11 @@ const CardText = styled("div")({
   "& > *": {
     padding: "5px",
   },
-  ":first-of-type": {
+  "p:first-of-type": {
     fontWeight: "300",
   },
-  ":last-of-type": {
-    fontWeight: "600",
+  "p:last-of-type": {
+    fontWeight: "500",
   },
 });
 

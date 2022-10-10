@@ -16,8 +16,8 @@ import {
   decrementProduct,
   changeAttribute,
 } from "../app/actions/cart";
-import caretLeft from "../imgs/CaretLeft.svg";
-import caretRight from "../imgs/CaretRight.svg";
+import caretLeft from "../svg/CaretLeft.svg";
+import caretRight from "../svg/CaretRight.svg";
 
 // styling, Component at ≈ 168
 const CartItemContainer = styled("div")(

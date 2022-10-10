@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "@emotion/styled";
 import CartItem from "./CartItem";
 import { connect } from "react-redux";
-import cartlogo from "../imgs/cart.svg";
+import cartlogo from "../svg/cart.svg";
 import { calculateTotal } from "../utils/price";
 import { Link } from "react-router-dom";
 
