@@ -6,7 +6,7 @@ import cartlogo from "../svg/cart.svg";
 import { calculateTotal } from "../utils/price";
 import { Link } from "react-router-dom";
 
-// Styling, Component at  ≈137
+// Styling, Component at  ≈136
 
 const CartLogo = styled("img")({
   cursor: "pointer",
@@ -92,22 +92,20 @@ const CartoverlayPrice = styled("div")({
 });
 
 const CartActionsContainer = styled("div")({
-  display: "flex",
-  justifyContent: "space-between",
+ display:'grid',
+ gridTemplateColumns:'1fr 1fr',
+ gap:'12px'
 });
 
 const CartActionsButton = styled("button")(
   {
-    boxSizing: "border-box",
     width: "140px",
     height: "43px",
-    padding: "16px 32px",
+    padding: "16px 10px",
     background: "#FFF",
     color: "black",
     textTransform: "uppercase",
     border: "1px solid #1D1F22",
-    display: "flex",
-    justifyContent: "center",
     lineHeight: "100%",
     fontSize: "14px",
     fontWeight: "600",
@@ -117,6 +115,7 @@ const CartActionsButton = styled("button")(
       color: "white",
       background: "black",
     },
+    // marginInline:"12px"
   },
 
   ({ checkout }) =>
