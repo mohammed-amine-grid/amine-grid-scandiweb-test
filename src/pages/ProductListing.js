@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import ProductListingCard from "../components/ProductListingCard";
 import { withRouter } from "../routes/withRouter";
 import getCategoryProducts from "../graphql/queries/getCategoryProducts";
+
 const PLPContainer = styled("div")({
   padding: "70px",
   display: "grid",
@@ -13,6 +14,13 @@ const PLPContainer = styled("div")({
   "@media (min-width:1399px)": {
     gridTemplateColumns: "repeat(3, 1fr);",
   },
+});
+
+const CategoryName = styled("h2")({
+  padding: "25px 78px",
+  fontSize: "42px",
+  fontWeight: "400",
+  textTransform: "uppercase",
 });
 
 class ProductListing extends Component {
@@ -35,13 +43,16 @@ class ProductListing extends Component {
   }
   render() {
     return (
-      <PLPContainer>
-        {this.state.products.length
-          ? this.state.products.map((product) => (
-              <ProductListingCard key={product.id} {...product} />
-            ))
-          : null}
-      </PLPContainer>
+      <>
+        <CategoryName>{this.props.params["*"]}</CategoryName>
+        <PLPContainer>
+          {this.state.products.length
+            ? this.state.products.map((product) => (
+                <ProductListingCard key={product.id} {...product} />
+              ))
+            : null}
+        </PLPContainer>
+      </>
     );
   }
 }

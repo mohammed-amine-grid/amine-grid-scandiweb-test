@@ -6,7 +6,7 @@ import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
 import getProductCategories from "../graphql/queries/getProductCategories";
 import Cartoverlay from "./Cartoverlay";
 
-//Styling, Component at  ≈ 108
+//Styling, Component at  ≈ 105
 
 const NavbarContainer = styled("nav")({
   width: "100%",
@@ -64,7 +64,7 @@ const CategoriesContainer = styled("ul")({
 const CategoryLink = styled("li")({
   listStyle: "none",
   a: {
-    marginRight:'5px',
+    marginRight: "5px",
     textDecoration: "none",
     color: "inherit",
     fontWeight: "600",
@@ -124,7 +124,7 @@ export default class Navbar extends Component {
     const NavLinkisActive = {
       color: "#5ECE7B",
       borderBottom: "2px solid #5ECE7B",
-    }
+    };
     return (
       <NavbarContainer>
         <CategoriesContainer>
@@ -132,9 +132,7 @@ export default class Navbar extends Component {
             this.state.categories.map((category) => (
               <CategoryLink key={category.name}>
                 <NavLink
-                  style={({ isActive }) =>
-                    isActive ? NavLinkisActive : null
-                  }
+                  style={({ isActive }) => (isActive ? NavLinkisActive : null)}
                   to={`/category/${category.name}`}
                 >
                   {category.name}
