@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "@emotion/styled";
 import navlogo from "../svg/a-logo.svg";
 import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
@@ -64,6 +64,7 @@ const CategoriesContainer = styled("ul")({
 const CategoryLink = styled("li")({
   listStyle: "none",
   a: {
+    marginRight:'5px',
     textDecoration: "none",
     color: "inherit",
     fontWeight: "600",
@@ -90,6 +91,9 @@ const CategoryLink = styled("li")({
       paddingBottom: "28px",
     },
   },
+}, ({isActive}) => isActive && {
+  color: "#5ECE7B",
+      borderBottom: "2px solid #5ECE7B",
 });
 
 const NavActions = styled("ul")({
@@ -120,13 +124,24 @@ export default class Navbar extends Component {
   }
 
   render() {
+    const NavLinkisActive = {
+      color: "#5ECE7B",
+      borderBottom: "2px solid #5ECE7B",
+    }
     return (
       <NavbarContainer>
         <CategoriesContainer>
           {this.state.categories &&
             this.state.categories.map((category) => (
               <CategoryLink key={category.name}>
-                <Link to={`/category/${category.name}`}>{category.name}</Link>
+                <NavLink
+                  style={({ isActive }) =>
+                    isActive ? NavLinkisActive : null
+                  }
+                  to={`/category/${category.name}`}
+                >
+                  {category.name}
+                </NavLink>
               </CategoryLink>
             ))}
         </CategoriesContainer>
@@ -140,4 +155,3 @@ export default class Navbar extends Component {
     );
   }
 }
-
