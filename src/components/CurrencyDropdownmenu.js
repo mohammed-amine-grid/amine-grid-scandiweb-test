@@ -104,7 +104,7 @@ class CurrencyDropdownmenu extends Component {
                   onClick={() => this.handleCurrencySelection(currency)}
                   key={currency.symbol}
                 >
-                  {currency.label}
+                   {currency.symbol + ' ' + currency.label}
                 </li>
               ))}
           </DropdownList>
