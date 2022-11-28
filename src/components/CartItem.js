@@ -99,7 +99,6 @@ const CartItemImageContainer = styled("div")(
       justifyContent: "flex-end",
       [ItemImage]: {
         marginLeft: "24px",
-        minHeight: "288px",
         maxWidth: "200px",
       },
       [CartItemQuantity]: {
@@ -117,10 +116,9 @@ const CartItemImageContainer = styled("div")(
 const ItemImage = styled("img")({
   marginLeft: "8px",
   display: "block",
-  minHeight: "190px",
-  minWidth: "121px",
-  maxHeight: "100%",
-  maxWidth: "100%",
+  alignSelf: "center",
+  height:"auto",
+  maxWidth: "121px",
 });
 
 const LeftArrow = styled("img")({
@@ -230,7 +228,6 @@ class CartItem extends Component {
     const price = getPrice(selectedCurrency, prices);
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
-
         <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
           <div>
             <ProductBrand>{brand}</ProductBrand>
@@ -239,7 +236,7 @@ class CartItem extends Component {
               {selectedCurrency?.symbol + " " + price}
             </ProductPrice>
           </div>
-           {/* iterate through product.attributes [] and render <AttrTitle> (id, i.e: "Size") && <Attribute> (value, i.e: "42") || <ProductColor> (if value is hex) */}
+          {/* iterate through product.attributes [] and render <AttrTitle> (id, i.e: "Size") && <Attribute> (value, i.e: "42") || <ProductColor> (if value is hex) */}
           {attributes.map((attr) => (
             <div key={attr.id}>
               <AttrTitle>{attr.id}:</AttrTitle>
@@ -283,7 +280,7 @@ class CartItem extends Component {
             <span>{quantity}</span>
             <button onClick={() => this.handleDecrement(id)}>-</button>
           </CartItemQuantity>
-          <ItemImage alt="src" src={this.state.selectedImgSrc} />
+          <ItemImage alt="product-image" src={this.state.selectedImgSrc} />
           {this.cartpageDisplay && gallery.length > 1 && (
             <>
               <LeftArrow

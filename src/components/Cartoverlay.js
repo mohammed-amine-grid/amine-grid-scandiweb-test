@@ -45,7 +45,7 @@ const CartoverlayContainer = styled("div")({
   right: 72,
   marginLeft: "20px",
   maxHeight: "677px",
-  maxWidth: "325px",
+maxWidth: "325px",
   backgroundColor: "#fff",
   padding: "32px 16px",
   scrollbarWidth: "thin",
@@ -61,7 +61,6 @@ const CartoverlayContainer = styled("div")({
     textDecoration: "none",
   },
   overflowY: "scroll",
-  // boxShadow:'0 0 0 100vmax rgba(0,0,0, 0.22)'
 });
 
 const CartoverlayHeader = styled("h3")({
