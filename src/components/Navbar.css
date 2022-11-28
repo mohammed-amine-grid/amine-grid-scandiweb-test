@@ -1,0 +1,9 @@
+.nav-link-active {
+  /*
+  normally I'd avoid using !important but it seems there are specificity issues caused by the order of emotion css files injection.
+  This can be fixed by configuring insertionPoint on the cache or using the prepend option.
+  Since this is the only instance this issue happens I figured I'd use the dreaded !important instead of creating a provider and cache.
+  */
+  color: #5ece7b !important;
+  border-bottom: 2px solid #5ece7b;
+}

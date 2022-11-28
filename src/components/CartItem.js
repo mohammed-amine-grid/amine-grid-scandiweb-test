@@ -230,6 +230,7 @@ class CartItem extends Component {
     const price = getPrice(selectedCurrency, prices);
     return (
       <CartItemContainer cartpageDisplay={this.cartpageDisplay}>
+
         <CartItemAttributesContainer cartpageDisplay={this.cartpageDisplay}>
           <div>
             <ProductBrand>{brand}</ProductBrand>

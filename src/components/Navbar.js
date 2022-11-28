@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "@emotion/styled";
 import navlogo from "../svg/a-logo.svg";
 import CurrencyDropdownmenu from "./CurrencyDropdownmenu";
 import getProductCategories from "../graphql/queries/getProductCategories";
 import Cartoverlay from "./Cartoverlay";
-
+import  './Navbar.css'
 //Styling, Component at  ≈ 105
 
 const NavbarContainer = styled("nav")({
@@ -66,7 +66,7 @@ const CategoryLink = styled("li")({
   a: {
     marginRight: "5px",
     textDecoration: "none",
-    color: "inherit",
+    color: 'black',
     fontWeight: "600",
     paddingInline: "8px",
     paddingBottom: "20px",
@@ -93,6 +93,7 @@ const CategoryLink = styled("li")({
   },
 });
 
+
 const NavActions = styled("ul")({
   display: "flex",
   width: "100%",
@@ -102,7 +103,7 @@ const NavActions = styled("ul")({
   flex: "2",
 });
 
-export default class Navbar extends Component {
+export default class Navbar extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -121,10 +122,8 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const NavLinkisActive = {
-      color: "#5ECE7B",
-      borderBottom: "2px solid #5ECE7B",
-    };
+    console.log('how many times do I render');
+    const activeLinkClassName = 'nav-link-active';
     return (
       <NavbarContainer>
         <CategoriesContainer>
@@ -132,8 +131,12 @@ export default class Navbar extends Component {
             this.state.categories.map((category) => (
               <CategoryLink key={category.name}>
                 <NavLink
-                  style={({ isActive }) => (isActive ? NavLinkisActive : null)}
+                  // key={category.name}
+                  className={({isActive}) => isActive ? activeLinkClassName : undefined}
+                  // className={({isActive}) =>console.log(isActive)}
+                  // className={({isActive}) => isActive ? Nav}
                   to={`/category/${category.name}`}
+                 end
                 >
                   {category.name}
                 </NavLink>
