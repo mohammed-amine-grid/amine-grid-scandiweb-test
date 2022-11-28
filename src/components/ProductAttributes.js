@@ -1,7 +1,7 @@
 // styled components used in "CartItem" and "ProductDetailsPage"
 
 // styling for product attributes when rendered inside cartoverlay, styles are modified when rendered in "Cart" or "PDP" by selecting [<StyledComponent>] in respective parent and overriding rules.
-// ideally it should've been the other way around, default styles for normal item display then modified in cartoverlay item display, I'll fix it if it's code smell! 
+// ideally it should've been the other way around, default styles for normal item display then modified in cartoverlay item display, I'll fix it if it's code smell!
 
 import styled from "@emotion/styled/macro";
 
@@ -18,8 +18,8 @@ const ProductName = styled("h4")({
 const ProductPrice = styled("span")({
   lineHeight: "160%",
   fontWeight: "600",
-  display:"inline-block",
-  marginBottom:'8px'
+  display: "inline-block",
+  marginBottom: "8px",
 });
 
 const ProductColor = styled("span")(
@@ -28,12 +28,7 @@ const ProductColor = styled("span")(
     width: "20px",
     height: "20px",
     marginRight: "10px",
-    cursor: "pointer",
     border: "1px solid #5ECE7B",
-    "&: hover": {
-      outline: "2px solid #5ECE7B",
-      outlineOffset: "1px",
-    },
   },
   ({ color }) => ({
     backgroundColor: `${color}`,
@@ -42,6 +37,15 @@ const ProductColor = styled("span")(
     selected && {
       outline: "2px solid #5ECE7B",
       outlineOffset: "1px",
+    },
+
+  ({ cartpageDisplay }) =>
+    cartpageDisplay && {
+      "&: hover": {
+        cursor: "pointer",
+        outline: "2px solid #5ECE7B",
+        outlineOffset: "1px",
+      },
     }
 );
 
@@ -62,19 +66,23 @@ const Attribute = styled("div")(
     lineHeight: "160%",
     minWidth: "24px",
     minHeight: "24px",
-    padding:'2px',
+    padding: "2px",
     border: "1px solid black",
     marginRight: "8px",
-    cursor: "pointer",
-    "&: hover": {
-      backgroundColor: "black",
-      color: "#fff",
-    },
   },
   ({ selected }) =>
     selected && {
       backgroundColor: "black",
       color: "#fff",
+    },
+
+  ({ cartpageDisplay }) =>
+    cartpageDisplay && {
+      cursor: "pointer",
+      "&: hover": {
+        backgroundColor: "black",
+        color: "#fff",
+      },
     }
 );
 

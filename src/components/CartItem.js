@@ -117,7 +117,7 @@ const ItemImage = styled("img")({
   marginLeft: "8px",
   display: "block",
   alignSelf: "center",
-  height:"auto",
+  height: "auto",
   maxWidth: "121px",
 });
 
@@ -243,8 +243,11 @@ class CartItem extends Component {
               {attr.items.map((item) =>
                 item.value[0] === "#" ? (
                   <ProductColor
-                    onClick={() =>
-                      this.selectAttribute(id, attr.id, item.value)
+                  cartpageDisplay={this.cartpageDisplay}
+                    onClick={
+                      this.cartpageDisplay
+                        ? () => this.selectAttribute(id, attr.id, item.value)
+                        : undefined
                     }
                     selected={this.attributeSelected(
                       selectedAttrs,
@@ -256,8 +259,11 @@ class CartItem extends Component {
                   />
                 ) : (
                   <Attribute
-                    onClick={() =>
-                      this.selectAttribute(id, attr.id, item.value)
+                    cartpageDisplay={this.cartpageDisplay}
+                    onClick={
+                      this.cartpageDisplay
+                        ? () => this.selectAttribute(id, attr.id, item.value)
+                        : undefined
                     }
                     isColor={item.value[0] === "#"}
                     selected={this.attributeSelected(
