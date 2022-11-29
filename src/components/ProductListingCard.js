@@ -9,22 +9,16 @@ import { addProductToCart } from "../app/actions/cart";
 import { getDefaultAttributes } from "../utils/attributes";
 import { formatNewId } from "../utils/formatNewId";
 
-//Styling, Component at  ≈ 101
+//Styling, Component at  ≈ 95
 
 const CardImg = styled("img")({
   display: "block",
-  width: "100%",
-  maxHeight: "100%",
+  width: "354px",
+  height: "330px",
   marginBottom: "24px",
   boxShadow: "0px 1px 10px rgba(168, 172, 176, 0.19)",
 });
 
-
-const CardImgContainer = styled("div")({
-height:"354px",
-width:"330px"
-})
- 
 const CardText = styled("div")({
   fontSize: "18px",
   "& > *": {
@@ -126,17 +120,14 @@ class ProductListingCard extends Component {
     return (
       <Card inStock={inStock}>
         <Link to={`/product/${id}`}>
-          <CardImgContainer>
-
           <CardImg src={gallery[0]} />
           {inStock && (
             <AddToCartIcon
-            onClick={(e) => this.quickShop(e, id)}
-            alt="add-to-cart-button"
-            src={cartIcon}
+              onClick={(e) => this.quickShop(e, id)}
+              alt="add-to-cart-button"
+              src={cartIcon}
             />
-            )}
-            </CardImgContainer>
+          )}
           {!inStock && <OutOfStock>Out of stock</OutOfStock>}
           <CardText>
             <p>{brand + " " + name}</p>
